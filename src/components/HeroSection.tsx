@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { fadeUp, staggerContainer, wordReveal } from "@/lib/motion";
 
 const SPACING = 36;
 const PARTICLE_RADIUS = 1.5;
@@ -33,7 +34,10 @@ export default function HeroSection() {
     if (!canvas || !wrap) return;
 
     const ctx = canvas.getContext("2d")!;
-    let W = 0, H = 0, cols = 0, rows = 0;
+    let W = 0,
+      H = 0,
+      cols = 0,
+      rows = 0;
     let particles: Particle[] = [];
     let rippleQueue: Ripple[] = [];
     const mouse = { x: -999, y: -999 };
@@ -153,39 +157,19 @@ export default function HeroSection() {
     };
   }, []);
 
-  const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
-
-  const containerVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.12 } },
-  };
-
-  const wordVariants = {
-    hidden: { opacity: 0, y: 32 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
-  };
-
-  const fadeUp = {
-    hidden: { opacity: 0, y: 16 },
-    visible: (delay: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: EASE, delay },
-    }),
-  };
-
   return (
     <div
       ref={wrapRef}
-      className="relative w-full min-h-screen overflow-hidden flex items-center justify-center"
-      style={{ background: "#FAFAFA" }}
+      className="relative w-full min-h-screen overflow-hidden flex items-center justify-center bg-paper"
     >
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+      />
 
       <div className="relative z-10 text-center px-8">
         <motion.p
-          className="text-xs tracking-[0.2em] uppercase mb-6"
-          style={{ color: "#BBBBCC", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}
+          className="eyebrow mb-6"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -194,62 +178,46 @@ export default function HeroSection() {
         </motion.p>
 
         <motion.h1
-          className="mb-6"
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: "clamp(52px, 10vw, 100px)",
-            fontWeight: 700,
-            lineHeight: 1.0,
-            letterSpacing: "-0.03em",
-            color: "#0A0A0F",
-          }}
-          variants={containerVariants}
+          className="mb-6 font-display font-bold text-ink text-[clamp(52px,10vw,100px)] leading-[1.0] tracking-[-0.03em]"
+          variants={staggerContainer}
           initial="hidden"
           animate="visible"
         >
-          {["enknot"].map((word, i) => (
-            <motion.span key={i} variants={wordVariants} style={{ display: "inline-block" }}>
+          {["ENKNOT"].map((word, i) => (
+            <motion.span
+              key={i}
+              className="inline-block"
+              variants={wordReveal}
+            >
               {word}
             </motion.span>
           ))}
         </motion.h1>
 
         <motion.p
-          className="mb-10 max-w-sm mx-auto"
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "15px",
-            color: "#888899",
-            lineHeight: 1.75,
-            fontWeight: 300,
-          }}
+          className="mb-10 max-w-sm mx-auto font-body font-light text-subtle text-[15px] leading-[1.75]"
           custom={0.7}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
         >
-          Design &amp; Engineering
+          AI &amp; Engineering
           <br />
           Building things that feel right.
         </motion.p>
 
         <motion.a
           href="#work"
-          className="inline-flex items-center gap-2 text-sm tracking-widest uppercase"
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            color: "#BBBBCC",
-            fontWeight: 500,
-          }}
+          className="inline-flex items-center gap-2 font-display font-medium text-faint text-sm tracking-widest uppercase"
           custom={0.95}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          whileHover={{ color: "#0A0A0F" }}
+          whileHover={{ color: "#0a0a0f" }}
           transition={{ duration: 0.2 }}
         >
           View Work
-          <span style={{ fontSize: "10px" }}>↓</span>
+          <span className="text-[10px]">↓</span>
         </motion.a>
       </div>
 
@@ -261,12 +229,9 @@ export default function HeroSection() {
       >
         <div
           className="w-px h-8"
-          style={{ background: "linear-gradient(to bottom, #CCCCDD, transparent)" }}
+          style={{ background: "linear-gradient(to bottom, var(--color-hint), transparent)" }}
         />
-        <span
-          className="text-[10px] tracking-[0.15em] uppercase"
-          style={{ color: "#CCCCDD", fontFamily: "'Space Grotesk', sans-serif" }}
-        >
+        <span className="font-display text-hint text-[10px] tracking-[0.15em] uppercase">
           scroll
         </span>
       </motion.div>

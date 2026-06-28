@@ -1,21 +1,69 @@
 @import "tailwindcss";
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+@theme {
+  /* Colors */
+  --color-paper: #fafafa; /* ページ背景 */
+  --color-ink: #0a0a0f; /* 主要テキスト */
+  --color-muted: #666677; /* 本文 */
+  --color-subtle: #888899; /* 補助テキスト */
+  --color-faint: #bbbbcc; /* ラベル・控えめなUI */
+  --color-hint: #cccccc; /* 罫線アクセント・記号 */
+  --color-line: #e8e8ee; /* 枠線 */
+  --color-surface: #f3f3f6; /* カード面 */
+  --color-shade: #ebebef; /* サムネ等のプレースホルダ面 */
+
+  /* Fonts */
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* Radius（全体で統一） */
+  --radius-base: 2px;
 }
 
-html {
-  scroll-behavior: smooth;
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    text-decoration: none;
+  }
 }
 
-body {
-  background: #FAFAFA;
-  color: #0A0A0F;
-  -webkit-font-smoothing: antialiased;
-}
+@layer components {
+  /* セクション見出しの上に置く小さなラベル（"About" / "Work" 等） */
+  .eyebrow {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 1;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+  }
 
-a {
-  text-decoration: none;
+  /* 技術スタックのタグ */
+  .chip {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-subtle);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-base);
+    padding: 0.25rem 0.75rem;
+  }
 }
