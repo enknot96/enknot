@@ -611,6 +611,7 @@ docker run -d -p 3000:3000 --name app --restart unless-stopped my-app
 >
 > t4g.small はメモリ2GB。EC2上で `npm run build` を走らせるとOOM(メモリ不足)で落ちることがある。
 > 対策の例:
+>
 > - **CI(GitHub Actions)側でビルドしてイメージをレジストリ(ECR / GHCR)にpush → EC2はpullするだけ** にする（推奨）
 > - もしくはEC2にスワップを追加する
 >
@@ -694,14 +695,14 @@ AWS RDSを利用（本番ではこちらが管理しやすい）
 
 ## 手動構成 → マネージド構成 の対応表
 
-| フェーズ1〜10（手動） | 実務でのマネージド構成 |
-| --- | --- |
-| Nginx + Certbot でTLS終端・更新 | **ALB + ACM**（証明書の発行・自動更新込み） |
-| 生EC2上で `docker run` | **ECS / Fargate**（サーバー管理不要のコンテナ実行） |
-| その場で `docker build` | **ECR** にpushして配布 |
-| SSH + git pull デプロイ | **GitHub Actions → ECR push → ECSローリング更新** |
-| 手作業でリソース作成 | **AWS CDK / Terraform**(IaC) |
-| Elastic IP + 自前DNS | **Route 53 + ALB**（DNSとヘルスチェック連携） |
+| フェーズ1〜10（手動）           | 実務でのマネージド構成                              |
+| ------------------------------- | --------------------------------------------------- |
+| Nginx + Certbot でTLS終端・更新 | **ALB + ACM**（証明書の発行・自動更新込み）         |
+| 生EC2上で `docker run`          | **ECS / Fargate**（サーバー管理不要のコンテナ実行） |
+| その場で `docker build`         | **ECR** にpushして配布                              |
+| SSH + git pull デプロイ         | **GitHub Actions → ECR push → ECSローリング更新**   |
+| 手作業でリソース作成            | **AWS CDK / Terraform**(IaC)                        |
+| Elastic IP + 自前DNS            | **Route 53 + ALB**（DNSとヘルスチェック連携）       |
 
 > 💡 ポイント: 手動構成は「学習用の教材」、マネージド構成は「実務の本番」。
 > ここを区別して両方さわっておくと、現場でどちらの話が出ても理解が追いつく。
@@ -841,9 +842,7 @@ cdk deploy
 
 ```yaml
 # ECSタスク定義（抜粋）: 秘密はSecrets ManagerのARNで参照
-"secrets": [
-  { "name": "DATABASE_URL", "valueFrom": "arn:aws:secretsmanager:...:secret:db-url" }
-]
+"secrets": [{ "name": "DATABASE_URL", "valueFrom": "arn:aws:secretsmanager:...:secret:db-url" }]
 ```
 
 ---
@@ -880,11 +879,11 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
-      - run: npx tsc --noEmit      # 型チェック
-      - run: npm run lint           # Lint
-      - run: npm test               # テスト
+      - run: npx tsc --noEmit # 型チェック
+      - run: npm run lint # Lint
+      - run: npm test # テスト
   deploy:
-    needs: check                    # checkが通った時だけ
+    needs: check # checkが通った時だけ
     runs-on: ubuntu-latest
     steps:
       # build → ECR push → ECS更新
