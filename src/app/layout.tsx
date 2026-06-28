@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "enknot",
-  description: "Portfolio — Design & Engineering",
+  title: "ENKNOT｜AI × Web Engineer",
+  description: "Portfolio — AI & Engineering",
 };
 
 export default function RootLayout({
@@ -12,15 +13,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className="h-full antialiased">
+    <html
+      lang="ja"
+      className="h-full antialiased"
+    >
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full" style={{ background: "#FAFAFA" }}>
+      <body className="min-h-full bg-paper">
         {children}
+        <Footer />
       </body>
     </html>
   );
