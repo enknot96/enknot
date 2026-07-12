@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "@/components/Footer";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 
 export const metadata: Metadata = {
-  title: "ENKNOT｜AI × Web Engineer",
+  title: "ENKNOT｜AI × Web Developer",
   description: "Portfolio — AI & Engineering",
 };
 
@@ -24,8 +25,10 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full bg-paper">
-        {children}
-        <Footer />
+        <SmoothScrollProvider>
+          {children}
+          <Footer />
+        </SmoothScrollProvider>
       </body>
     </html>
   );
