@@ -201,9 +201,7 @@ export default function HeroSection() {
           initial="hidden"
           animate="visible"
         >
-          AI &amp; Engineering
-          <br />
-          Building things that feel right.
+          AI × Web Developer
         </motion.p>
 
         <motion.a

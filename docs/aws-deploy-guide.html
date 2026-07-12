@@ -1,0 +1,916 @@
+<title>AWS デプロイ手順書 — enknot</title>
+<meta name="description" content="Next.js + Docker + EC2 + Nginx + HTTPS + GitHub Actions による本番デプロイの完全手順書">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0D1117;
+    --surface: #161B22;
+    --surface2: #21262D;
+    --border: #30363D;
+    --text: #E6EDF3;
+    --text-muted: #8B949E;
+    --accent: #58A6FF;
+    --accent-dim: #1F3A5F;
+    --green: #3FB950;
+    --green-dim: #1A3A1F;
+    --yellow: #D29922;
+    --red: #F85149;
+    --purple: #BC8CFF;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+    --sidebar-w: 240px;
+    --nav-h: 52px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* TOP NAV */
+  .topnav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 16px;
+    z-index: 100;
+  }
+
+  .topnav-logo {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .topnav-logo span { color: var(--text-muted); }
+
+  .topnav-meta {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  /* LAYOUT */
+  .layout {
+    display: flex;
+    margin-top: var(--nav-h);
+    min-height: calc(100vh - var(--nav-h));
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: var(--sidebar-w);
+    flex-shrink: 0;
+    position: sticky;
+    top: var(--nav-h);
+    height: calc(100vh - var(--nav-h));
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+  }
+
+  .sidebar-section {
+    padding: 0 16px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 16px;
+  }
+
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 16px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .sidebar a:hover { color: var(--text); background: var(--surface); }
+  .sidebar a.done { color: var(--green); }
+  .sidebar a.done::after { content: '✓'; margin-left: auto; font-size: 11px; }
+
+  /* MAIN */
+  .main {
+    flex: 1;
+    max-width: 820px;
+    padding: 40px 48px 80px;
+    min-width: 0;
+  }
+
+  /* HERO */
+  .hero {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    text-wrap: balance;
+  }
+
+  .hero-desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  .arch-diagram {
+    margin-top: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+
+  .arch-diagram .hl { color: var(--accent); }
+  .arch-diagram .gl { color: var(--green); }
+  .arch-diagram .pl { color: var(--purple); }
+
+  /* PHASE */
+  .phase {
+    margin-bottom: 52px;
+    scroll-margin-top: calc(var(--nav-h) + 20px);
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .phase-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--accent-dim);
+    color: var(--accent);
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .phase-badge.done {
+    background: var(--green-dim);
+    color: var(--green);
+  }
+
+  .phase h2 {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .phase-desc {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    font-size: 13px;
+  }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 16px; }
+
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .step-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .step-title {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .step-body { padding: 14px 16px; }
+
+  .step-body p { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
+  .step-body p:last-child { margin-bottom: 0; }
+
+  /* CODE */
+  .code-block {
+    background: #010409;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 10px 0;
+  }
+
+  .code-block pre {
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #C9D1D9;
+  }
+
+  .code-block .comment { color: #6E7681; }
+  .code-block .cmd { color: var(--green); }
+  .code-block .flag { color: var(--accent); }
+  .code-block .str { color: #A5D6FF; }
+  .code-block .kw { color: var(--purple); }
+
+  /* NOTE / WARNING */
+  .note {
+    display: flex;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    margin: 10px 0;
+  }
+
+  .note.info { background: var(--accent-dim); border-left: 3px solid var(--accent); }
+  .note.warn { background: #2D2100; border-left: 3px solid var(--yellow); color: #E3B341; }
+  .note.success { background: var(--green-dim); border-left: 3px solid var(--green); }
+
+  .note-icon { flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+
+  /* TABLE */
+  .tbl-wrap { overflow-x: auto; margin: 10px 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+
+  th {
+    background: var(--surface2);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 500;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+  td code, p code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--surface2);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--purple);
+  }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* SUMMARY TABLE */
+  .summary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+
+  .summary-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .summary-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .summary-row:last-child { border-bottom: none; }
+
+  .badge-done {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    background: var(--green-dim);
+    color: var(--green);
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-left: auto;
+  }
+
+  .summary-phase {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    width: 64px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { padding: 24px 20px 60px; }
+  }
+</style>
+
+<nav class="topnav">
+  <div class="topnav-logo"><span>~/</span>enknot<span>/</span>aws-deploy-guide</div>
+  <div class="topnav-meta">Next.js + EC2 + Docker + Nginx + HTTPS + CI/CD</div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">概要</div>
+    <a href="#overview">アーキテクチャ</a>
+    <a href="#prerequisites">前提条件</a>
+
+    <div class="sidebar-section">AWSセットアップ</div>
+    <a class="done" href="#phase2">フェーズ2 — AWSアカウント</a>
+    <a class="done" href="#phase3">フェーズ3 — EC2構築</a>
+    <a class="done" href="#phase4">フェーズ4 — サーバー初期設定</a>
+
+    <div class="sidebar-section">アプリデプロイ</div>
+    <a class="done" href="#phase5">フェーズ5 — アプリ配置</a>
+    <a class="done" href="#phase6">フェーズ6 — Nginx</a>
+
+    <div class="sidebar-section">ドメイン & HTTPS</div>
+    <a class="done" href="#phase7">フェーズ7 — ドメイン取得</a>
+    <a class="done" href="#phase8">フェーズ8 — DNS設定</a>
+    <a class="done" href="#phase9">フェーズ9 — HTTPS化</a>
+
+    <div class="sidebar-section">自動化 & セキュリティ</div>
+    <a class="done" href="#phase10">フェーズ10 — GitHub Actions</a>
+    <a class="done" href="#security">セキュリティ設定</a>
+  </aside>
+
+  <main class="main">
+
+    <!-- HERO -->
+    <section class="hero" id="overview">
+      <div class="hero-eyebrow">AWS Deploy Guide</div>
+      <h1>Next.js アプリの<br>本番デプロイ完全手順書</h1>
+      <p class="hero-desc">Docker化されたNext.jsアプリをEC2にデプロイし、独自ドメイン・HTTPS・GitHub Actionsによる自動デプロイまでを構築する手順書。</p>
+
+      <div class="arch-diagram">
+        <span class="gl">ユーザー</span><br>
+        　↓<br>
+        <span class="hl">Cloudflare</span>　（DDoS対策 · WAF · CDN · IP隠蔽）<br>
+        　↓<br>
+        <span class="hl">EC2</span>　t3.micro / Amazon Linux 2023 / 固定IP<br>
+        　├── <span class="pl">Nginx</span>　（リバースプロキシ · HTTPS終端）<br>
+        　├── <span class="pl">Docker</span>　→ Next.js コンテナ（port 3000）<br>
+        　└── <span class="pl">fail2ban</span>　（SSH ブルートフォース対策）<br>
+        　↑<br>
+        <span class="gl">GitHub Actions</span>　（git push → 自動デプロイ）
+      </div>
+    </section>
+
+    <!-- SUMMARY -->
+    <div class="summary">
+      <div class="summary-header">フェーズ一覧</div>
+      <div class="summary-row"><span class="summary-phase">Phase 1</span>Dockerファイル作成・アプリのコンテナ化<span class="badge-done">完了</span></div>
+      <div class="summary-row"><span class="summary-phase">Phase 2</span>AWSアカウント作成・IAM・請求アラーム<span class="badge-done">完了</span></div>
+      <div class="summary-row"><span class="summary-phase">Phase 3</span>EC2構築・Elastic IP・セキュリティグループ<span class="badge-done">完了</span></div>
+      <div class="summary-row"><span class="summary-phase">Phase 4</span>サーバー初期設定（Docker · Git · dnf update）<span class="badge-done">完了</span></div>
+      <div class="summary-row"><span class="summary-phase">Phase 5</span>git clone → docker build → docker run<span class="badge-done">完了</span></div>
+      <div class="summary-row"><span class="summary-phase">Phase 6</span>Nginx インストール・リバースプロキシ設定<span class="badge-done">完了</span></div>
+      <div class="summary-row"><span class="summary-phase">Phase 7</span>Cloudflare でドメイン取得（.dev）<span class="badge-done">完了</span></div>
+      <div class="summary-row"><span class="summary-phase">Phase 8</span>DNS Aレコード設定<span class="badge-done">完了</span></div>
+      <div class="summary-row"><span class="summary-phase">Phase 9</span>Certbot で SSL証明書取得・HTTPS化<span class="badge-done">完了</span></div>
+      <div class="summary-row"><span class="summary-phase">Phase 10</span>GitHub Actions 自動デプロイ<span class="badge-done">完了</span></div>
+      <div class="summary-row"><span class="summary-phase">Security</span>Cloudflare Proxy · SSH IP制限 · fail2ban<span class="badge-done">完了</span></div>
+    </div>
+
+    <!-- PREREQUISITES -->
+    <section class="phase" id="prerequisites">
+      <div class="phase-header">
+        <span class="phase-badge done">前提条件</span>
+        <h2>必要なもの</h2>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>項目</th><th>内容</th></tr>
+          <tr><td>アプリ</td><td>Next.js（<code>output: "standalone"</code>設定済み）</td></tr>
+          <tr><td>Dockerfile</td><td>multi-stage build 済み</td></tr>
+          <tr><td>GitHub リポジトリ</td><td>コードがpush済みであること</td></tr>
+          <tr><td>AWS アカウント</td><td>IAMユーザーでログイン</td></tr>
+          <tr><td>クレジットカード</td><td>AWS登録用</td></tr>
+          <tr><td>ローカルPC</td><td>Mac（zsh）想定</td></tr>
+          <tr><td>gh コマンド</td><td>GitHub CLI（<code>brew install gh</code>）</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- PHASE 2 -->
+    <section class="phase" id="phase2">
+      <div class="phase-header">
+        <span class="phase-badge done">Phase 2</span>
+        <h2>AWSアカウント設定</h2>
+      </div>
+      <p class="phase-desc">rootユーザーの保護・IAMユーザー作成・請求アラームの設定。</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header"><div class="step-num">1</div><div class="step-title">rootユーザー MFA設定</div></div>
+          <div class="step-body">
+            <p>右上アカウント名 → セキュリティ認証情報 → 多要素認証(MFA) → MFAを割り当てる → Authenticator app でQRスキャン</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">2</div><div class="step-title">IAMユーザー作成（管理者）</div></div>
+          <div class="step-body">
+            <p>IAM → ユーザー → ユーザーの作成</p>
+            <div class="tbl-wrap"><table>
+              <tr><th>項目</th><th>値</th></tr>
+              <tr><td>ユーザー名</td><td><code>enknot-admin</code>（任意）</td></tr>
+              <tr><td>コンソールアクセス</td><td>有効化</td></tr>
+              <tr><td>グループ</td><td>新規作成 <code>Administrators</code></td></tr>
+              <tr><td>ポリシー</td><td><code>AdministratorAccess</code></td></tr>
+            </table></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">3</div><div class="step-title">IAMユーザー MFA設定</div></div>
+          <div class="step-body">
+            <p>IAMユーザーでログイン → セキュリティ認証情報 → MFAデバイスの割り当て</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">4</div><div class="step-title">請求アラーム設定（$10）</div></div>
+          <div class="step-body">
+            <p><strong>リージョンを us-east-1（バージニア北部）に変更してから作業すること。</strong></p>
+            <p>請求とコスト管理 → 請求設定 → CloudWatch請求アラートを有効化 → CloudWatch → アラーム → アラームの作成 → メトリクスの選択 → Billing → 概算合計請求額 → USD → しきい値 10 → SNSトピック作成 → 確認メールの Confirm subscription をクリック</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE 3 -->
+    <section class="phase" id="phase3">
+      <div class="phase-header">
+        <span class="phase-badge done">Phase 3</span>
+        <h2>EC2構築</h2>
+      </div>
+      <p class="phase-desc">仮想サーバーの作成・固定IP取得・ファイアウォール設定。</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header"><div class="step-num">1</div><div class="step-title">EC2インスタンス作成</div></div>
+          <div class="step-body">
+            <p>EC2 → インスタンスを起動</p>
+            <div class="tbl-wrap"><table>
+              <tr><th>項目</th><th>値</th></tr>
+              <tr><td>名前</td><td><code>enknot-server</code></td></tr>
+              <tr><td>AMI</td><td>Amazon Linux 2023</td></tr>
+              <tr><td>インスタンスタイプ</td><td><code>t3.micro</code>（12ヶ月無料枠）</td></tr>
+              <tr><td>キーペア</td><td>新規作成 <code>enknot-key</code>（.pem）</td></tr>
+              <tr><td>セキュリティグループ</td><td>SSH + HTTP + HTTPS を許可</td></tr>
+              <tr><td>ストレージ</td><td>8GB gp3（デフォルト）</td></tr>
+            </table></div>
+            <div class="note warn">
+              <span class="note-icon">⚠</span>
+              <span>ダウンロードされた <code>enknot-key.pem</code> は紛失すると再取得不可。必ず保管すること。</span>
+            </div>
+            <div class="code-block"><pre><span class="comment"># キーファイルを移動して権限設定</span>
+<span class="cmd">mv</span> ~/Downloads/enknot-key.pem ~/.ssh/
+<span class="cmd">chmod</span> 400 ~/.ssh/enknot-key.pem</pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">2</div><div class="step-title">Elastic IP 取得・割り当て</div></div>
+          <div class="step-body">
+            <p>EC2 → Elastic IP → Elastic IPアドレスを割り当てる → 割り当て → アクション → Elastic IPアドレスの関連付け → インスタンス選択 → 関連付ける</p>
+            <div class="note info">
+              <span class="note-icon">ℹ</span>
+              <span>割り当て中は無料。インスタンスを停止したまま Elastic IP を保持すると課金される。</span>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">3</div><div class="step-title">セキュリティグループ確認</div></div>
+          <div class="step-body">
+            <p>後続フェーズで以下のポートを順次開放する：</p>
+            <div class="tbl-wrap"><table>
+              <tr><th>ポート</th><th>用途</th><th>ソース</th></tr>
+              <tr><td>22 (SSH)</td><td>サーバー接続</td><td>自分のIPのみ（セキュリティ設定フェーズで変更）</td></tr>
+              <tr><td>80 (HTTP)</td><td>Nginx</td><td>0.0.0.0/0</td></tr>
+              <tr><td>443 (HTTPS)</td><td>Nginx + SSL</td><td>0.0.0.0/0</td></tr>
+              <tr><td>3000</td><td>Docker確認用（一時的）</td><td>0.0.0.0/0</td></tr>
+            </table></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE 4 -->
+    <section class="phase" id="phase4">
+      <div class="phase-header">
+        <span class="phase-badge done">Phase 4</span>
+        <h2>サーバー初期設定</h2>
+      </div>
+      <p class="phase-desc">EC2にSSH接続してDocker・Gitをインストール。</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header"><div class="step-num">1</div><div class="step-title">SSH接続</div></div>
+          <div class="step-body">
+            <div class="code-block"><pre><span class="cmd">ssh</span> <span class="flag">-i</span> ~/.ssh/enknot-key.pem ec2-user@<span class="str">&lt;Elastic IP&gt;</span></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">2</div><div class="step-title">パッケージ更新・Docker・Git インストール</div></div>
+          <div class="step-body">
+            <div class="code-block"><pre><span class="comment"># パッケージ最新化</span>
+<span class="cmd">sudo dnf update</span> <span class="flag">-y</span>
+
+<span class="comment"># Docker インストール・起動・自動起動</span>
+<span class="cmd">sudo dnf install</span> <span class="flag">-y</span> docker
+<span class="cmd">sudo systemctl start</span> docker
+<span class="cmd">sudo systemctl enable</span> docker
+
+<span class="comment"># ec2-user を docker グループに追加（sudo不要にする）</span>
+<span class="cmd">sudo usermod</span> <span class="flag">-aG</span> docker ec2-user
+
+<span class="comment"># 一度ログアウトして再接続（グループ反映）</span>
+<span class="cmd">exit</span>
+
+<span class="comment"># Git インストール</span>
+<span class="cmd">sudo dnf install</span> <span class="flag">-y</span> git</pre></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- PHASE 5 -->
+    <section class="phase" id="phase5">
+      <div class="phase-header">
+        <span class="phase-badge done">Phase 5</span>
+        <h2>アプリ配置・起動</h2>
+      </div>
+      <p class="phase-desc">GitHubからコードを取得しDockerでビルド・起動。</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header"><div class="step-num">1</div><div class="step-title">GitHubにコードをpush（ローカルMacで実行）</div></div>
+          <div class="step-body">
+            <div class="code-block"><pre><span class="comment"># リポジトリ作成 + push を1コマンドで</span>
+<span class="cmd">gh repo create</span> enknot <span class="flag">--public --source=. --remote=origin --push</span></pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">2</div><div class="step-title">EC2でビルド・起動</div></div>
+          <div class="step-body">
+            <div class="code-block"><pre><span class="comment"># コードを取得</span>
+<span class="cmd">git clone</span> https://github.com/<span class="str">&lt;username&gt;</span>/enknot.git
+<span class="cmd">cd</span> enknot
+
+<span class="comment"># Dockerイメージをビルド（2〜5分）</span>
+<span class="cmd">docker build</span> <span class="flag">-t</span> enknot .
+
+<span class="comment"># コンテナ起動（--restart always = EC2再起動後も自動起動）</span>
+<span class="cmd">docker run</span> <span class="flag">-d -p</span> 3000:3000 <span class="flag">--name</span> enknot <span class="flag">--restart always</span> enknot</pre></div>
+            <div class="note info">
+              <span class="note-icon">ℹ</span>
+              <span>この時点でセキュリティグループにポート3000を一時的に開放すると <code>http://&lt;IP&gt;:3000</code> で動作確認できる。Nginx設定後は閉じてよい。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE 6 -->
+    <section class="phase" id="phase6">
+      <div class="phase-header">
+        <span class="phase-badge done">Phase 6</span>
+        <h2>Nginx リバースプロキシ</h2>
+      </div>
+      <p class="phase-desc">ポート80でアクセスできるようにNginxを設定する。</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header"><div class="step-num">1</div><div class="step-title">Nginx インストール・起動</div></div>
+          <div class="step-body">
+            <div class="code-block"><pre><span class="cmd">sudo dnf install</span> <span class="flag">-y</span> nginx
+<span class="cmd">sudo systemctl start</span> nginx
+<span class="cmd">sudo systemctl enable</span> nginx</pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">2</div><div class="step-title">設定ファイル作成</div></div>
+          <div class="step-body">
+            <div class="code-block"><pre><span class="cmd">sudo vi</span> /etc/nginx/conf.d/enknot.conf</pre></div>
+            <div class="code-block"><pre><span class="kw">server</span> {
+    <span class="kw">listen</span> 80;
+    <span class="kw">server_name</span> <span class="str">enknot.dev</span>;  <span class="comment"># ← ドメイン取得後はドメイン名に変更</span>
+
+    <span class="kw">location</span> / {
+        proxy_pass          http://localhost:3000;
+        proxy_http_version  1.1;
+        proxy_set_header    Upgrade $http_upgrade;
+        proxy_set_header    Connection <span class="str">'upgrade'</span>;
+        proxy_set_header    Host $host;
+        proxy_cache_bypass  $http_upgrade;
+    }
+}</pre></div>
+            <div class="code-block"><pre><span class="comment"># 文法チェック → 反映</span>
+<span class="cmd">sudo nginx -t</span> && <span class="cmd">sudo systemctl reload</span> nginx</pre></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- PHASE 7 -->
+    <section class="phase" id="phase7">
+      <div class="phase-header">
+        <span class="phase-badge done">Phase 7</span>
+        <h2>ドメイン取得（Cloudflare）</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header"><div class="step-num">1</div><div class="step-title">Cloudflare でドメイン購入</div></div>
+          <div class="step-body">
+            <p>cloudflare.com → アカウント作成 → Domain Registration → Register Domains → ドメイン名を検索 → 購入（約$12/年）</p>
+            <div class="note success">
+              <span class="note-icon">✓</span>
+              <span>Cloudflare Registrar は原価販売。DNS管理・CDN・DDoS対策も同一画面で完結するため推奨。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE 8 -->
+    <section class="phase" id="phase8">
+      <div class="phase-header">
+        <span class="phase-badge done">Phase 8</span>
+        <h2>DNS設定</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header"><div class="step-num">1</div><div class="step-title">A レコード追加</div></div>
+          <div class="step-body">
+            <p>Cloudflare → DNS → Records → Add record</p>
+            <div class="tbl-wrap"><table>
+              <tr><th>Type</th><th>Name</th><th>IPv4 address</th><th>Proxy status</th></tr>
+              <tr><td>A</td><td>@</td><td>&lt;Elastic IP&gt;</td><td>DNS only（グレー）← 初期</td></tr>
+            </table></div>
+            <div class="note warn">
+              <span class="note-icon">⚠</span>
+              <span>Certbot（HTTPS化）完了後にProxy（オレンジ）へ変更すること。初期はDNS onlyにしないとCertbotが失敗する。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE 9 -->
+    <section class="phase" id="phase9">
+      <div class="phase-header">
+        <span class="phase-badge done">Phase 9</span>
+        <h2>HTTPS化（Certbot）</h2>
+      </div>
+      <p class="phase-desc">Let's Encrypt のSSL証明書を取得してHTTPS化。</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header"><div class="step-num">1</div><div class="step-title">Certbot インストール・証明書取得</div></div>
+          <div class="step-body">
+            <div class="code-block"><pre><span class="comment"># Certbot インストール</span>
+<span class="cmd">sudo dnf install</span> <span class="flag">-y</span> certbot python3-certbot-nginx
+
+<span class="comment"># SSL証明書取得（Nginxに自動設定）</span>
+<span class="cmd">sudo certbot</span> <span class="flag">--nginx -d</span> <span class="str">enknot.dev</span></pre></div>
+            <div class="note info">
+              <span class="note-icon">ℹ</span>
+              <span>証明書は90日で失効するが、Certbotが自動更新タスクを設定してくれる。手動更新は不要。</span>
+            </div>
+            <div class="note warn">
+              <span class="note-icon">⚠</span>
+              <span><code>Could not automatically find a matching server block</code> エラーが出たら、<code>/etc/nginx/conf.d/enknot.conf</code> の <code>server_name</code> がドメイン名になっているか確認してから再実行。</span>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">2</div><div class="step-title">セキュリティグループにポート443を追加</div></div>
+          <div class="step-body">
+            <p>AWS → EC2 → セキュリティグループ → インバウンドルールを編集 → HTTPS（443）→ 0.0.0.0/0 → 保存</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">3</div><div class="step-title">Cloudflare Proxy を有効化</div></div>
+          <div class="step-body">
+            <p>Cloudflare → DNS → Records → A レコードの雲アイコンをクリック → オレンジ（Proxied）に変更</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- PHASE 10 -->
+    <section class="phase" id="phase10">
+      <div class="phase-header">
+        <span class="phase-badge done">Phase 10</span>
+        <h2>GitHub Actions 自動デプロイ</h2>
+      </div>
+      <p class="phase-desc">main ブランチへの push で EC2 に自動デプロイ。</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header"><div class="step-num">1</div><div class="step-title">GitHub Secrets 登録</div></div>
+          <div class="step-body">
+            <p>GitHub → リポジトリ → Settings → Secrets and variables → Actions → New repository secret</p>
+            <div class="code-block"><pre><span class="comment"># SSH秘密鍵をクリップボードにコピー</span>
+<span class="cmd">cat</span> ~/.ssh/enknot-key.pem | <span class="cmd">pbcopy</span></pre></div>
+            <div class="tbl-wrap"><table>
+              <tr><th>Name</th><th>Value</th></tr>
+              <tr><td><code>EC2_SSH_KEY</code></td><td>enknot-key.pem の全内容（%は含めない）</td></tr>
+              <tr><td><code>EC2_HOST</code></td><td>Elastic IP アドレス</td></tr>
+              <tr><td><code>EC2_USER</code></td><td><code>ec2-user</code></td></tr>
+            </table></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">2</div><div class="step-title">ワークフローファイル作成</div></div>
+          <div class="step-body">
+            <div class="code-block"><pre><span class="comment"># .github/workflows/deploy.yml</span>
+<span class="kw">name</span>: Deploy to EC2
+
+<span class="kw">on</span>:
+  push:
+    branches:
+      - main
+
+<span class="kw">jobs</span>:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/enknot
+            git pull origin main
+            docker build -t enknot .
+            docker stop enknot || true
+            docker rm enknot || true
+            docker run -d -p 3000:3000 --name enknot --restart always enknot</pre></div>
+            <div class="note info">
+              <span class="note-icon">ℹ</span>
+              <span>Secretsのキー名をサフィックス付き（例: <code>EC2_HOST_enknot</code>）にした場合は、<code>secrets.</code> の参照名も合わせること。</span>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">3</div><div class="step-title">main ブランチにpushして動作確認</div></div>
+          <div class="step-body">
+            <div class="code-block"><pre><span class="cmd">git checkout</span> main
+<span class="cmd">git merge</span> dev
+<span class="cmd">git push origin</span> main
+
+<span class="comment"># Actions の結果を確認</span>
+<span class="comment"># https://github.com/&lt;username&gt;/enknot/actions</span></pre></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECURITY -->
+    <section class="phase" id="security">
+      <div class="phase-header">
+        <span class="phase-badge done">Security</span>
+        <h2>セキュリティ設定</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header"><div class="step-num">1</div><div class="step-title">SSH IP制限（自分のIPのみ）</div></div>
+          <div class="step-body">
+            <div class="code-block"><pre><span class="comment"># 自分のIPを確認</span>
+<span class="cmd">curl -4</span> ifconfig.me</pre></div>
+            <p>AWS → セキュリティグループ → SSH（22番）のソースを <code>&lt;自分のIP&gt;/32</code> に変更。</p>
+            <div class="note warn">
+              <span class="note-icon">⚠</span>
+              <span>自宅回線はIPが変わる場合がある。接続できなくなったらAWSコンソールからIPを更新すること。</span>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">2</div><div class="step-title">fail2ban インストール・設定</div></div>
+          <div class="step-body">
+            <div class="code-block"><pre><span class="comment"># インストール</span>
+<span class="cmd">sudo dnf install</span> <span class="flag">-y</span> fail2ban
+
+<span class="comment"># 設定ファイル作成（シンプルな方法）</span>
+<span class="cmd">sudo bash -c</span> <span class="str">'cat > /etc/fail2ban/jail.local &lt;&lt; EOF
+[DEFAULT]
+bantime = 3600
+findtime = 600
+maxretry = 5
+
+[sshd]
+enabled = true
+EOF'</span>
+
+<span class="comment"># 起動・自動起動</span>
+<span class="cmd">sudo systemctl start</span> fail2ban
+<span class="cmd">sudo systemctl enable</span> fail2ban
+
+<span class="comment"># 動作確認</span>
+<span class="cmd">sudo fail2ban-client status</span> sshd</pre></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-header"><div class="step-num">3</div><div class="step-title">Cloudflare Proxy 有効化</div></div>
+          <div class="step-body">
+            <p>Cloudflare → DNS → Records → A レコードの雲アイコン → オレンジ（Proxied）</p>
+            <div class="note success">
+              <span class="note-icon">✓</span>
+              <span>有効化でDDoS対策・WAF・CDN・EC2実IPの隠蔽が自動で有効になる（無料）。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
