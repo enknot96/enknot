@@ -55,7 +55,9 @@ export default function AboutSection() {
               className="mb-8 font-display font-bold text-ink text-[clamp(28px,4vw,44px)] leading-[1.15] tracking-[-0.02em]"
               {...reveal(0.1)}
             >
-              TAMAKI Shuto - 玉木 周統
+              TAMAKI Shuto
+              <br />
+              <span className="font-noto font-normal text-[clamp(20px,4vw,36px)]">玉木 周統</span>
             </motion.h2>
 
             <motion.p
