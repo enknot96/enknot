@@ -3,7 +3,7 @@
 @theme {
   /* Colors */
   --color-paper: #fafafa; /* ページ背景 */
-  --color-ink: #0a0a0f; /* 主要テキスト */
+  --color-ink: #14141a; /* 主要テキスト */
   --color-muted: #666677; /* 本文 */
   --color-subtle: #888899; /* 補助テキスト */
   --color-faint: #bbbbcc; /* ラベル・控えめなUI */

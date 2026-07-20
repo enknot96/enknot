@@ -12,7 +12,7 @@ type Props = { project: Project };
 
 export default function ProjectDetail({ project }: Props) {
   return (
-    <main className="min-h-screen bg-paper py-28 md:py-40">
+    <main className="min-h-screen bg-paper py-20 md:py-28">
       <Container narrow>
         <motion.div {...fadeUpProps(0)}>
           <Link
