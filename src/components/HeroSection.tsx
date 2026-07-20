@@ -178,7 +178,7 @@ export default function HeroSection() {
         </motion.p>
 
         <motion.h1
-          className="mb-6 font-display font-bold text-ink text-[clamp(52px,10vw,100px)] leading-[1.0] tracking-[-0.03em]"
+          className="mb-6 font-hero text-ink text-[clamp(52px,10vw,100px)] leading-none tracking-[0.01em]"
           variants={staggerContainer}
           initial="hidden"
           animate="visible"

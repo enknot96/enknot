@@ -50,7 +50,7 @@ export default function ProjectCard({ project, index }: Props) {
               {project.category}
             </Eyebrow>
 
-            <h3 className="mb-2 font-display font-semibold text-ink text-[18px] tracking-[-0.01em]">
+            <h3 className="mb-2 font-noto font-semibold text-ink text-[18px] tracking-[-0.01em]">
               {project.title}
             </h3>
 
