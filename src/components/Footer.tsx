@@ -7,20 +7,30 @@ import Container from "./ui/Container";
 const SPACING = 36;
 const PARTICLE_RADIUS = 1.5;
 
-type Particle = { bx: number; by: number; x: number; y: number; alpha: number; targetAlpha: number };
-type Ripple   = { cx: number; cy: number; strength: number; time: number };
+type Particle = {
+  bx: number;
+  by: number;
+  x: number;
+  y: number;
+  alpha: number;
+  targetAlpha: number;
+};
+type Ripple = { cx: number; cy: number; strength: number; time: number };
 
 function useParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const wrapRef   = useRef<HTMLElement>(null);
+  const wrapRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current!;
-    const wrap   = wrapRef.current!;
+    const wrap = wrapRef.current!;
     if (!canvas || !wrap) return;
 
     const ctx = canvas.getContext("2d")!;
-    let W = 0, H = 0, cols = 0, rows = 0;
+    let W = 0,
+      H = 0,
+      cols = 0,
+      rows = 0;
     let particles: Particle[] = [];
     let rippleQueue: Ripple[] = [];
     const mouse = { x: -999, y: -999 };
@@ -32,11 +42,18 @@ function useParticleCanvas() {
       const offsetY = (H - (rows - 1) * SPACING) / 2;
       for (let r = 0; r < rows; r++)
         for (let c = 0; c < cols; c++)
-          particles.push({ bx: offsetX + c * SPACING, by: offsetY + r * SPACING, x: 0, y: 0, alpha: 0, targetAlpha: 0.06 + Math.random() * 0.05 });
+          particles.push({
+            bx: offsetX + c * SPACING,
+            by: offsetY + r * SPACING,
+            x: 0,
+            y: 0,
+            alpha: 0,
+            targetAlpha: 0.06 + Math.random() * 0.05,
+          });
     }
 
     function resize() {
-      W = canvas.width  = wrap.offsetWidth;
+      W = canvas.width = wrap.offsetWidth;
       H = canvas.height = wrap.offsetHeight;
       cols = Math.floor(W / SPACING);
       rows = Math.floor(H / SPACING);
@@ -57,17 +74,24 @@ function useParticleCanvas() {
         let displacement = 0;
         for (const r of rippleQueue) {
           const age = (now - r.time) / 1000;
-          const dx = p.bx - r.cx, dy = p.by - r.cy;
+          const dx = p.bx - r.cx,
+            dy = p.by - r.cy;
           const dist = Math.sqrt(dx * dx + dy * dy);
           const d = Math.abs(dist - age * 280);
-          if (d < 60) displacement += Math.sin((1 - d / 60) * Math.PI) * 10 * Math.exp(-age * 2.5) * r.strength;
+          if (d < 60)
+            displacement +=
+              Math.sin((1 - d / 60) * Math.PI) * 10 * Math.exp(-age * 2.5) * r.strength;
         }
-        const mdx = p.bx - mouse.x, mdy = p.by - mouse.y;
+        const mdx = p.bx - mouse.x,
+          mdy = p.by - mouse.y;
         const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
         const mi = mdist < 90 ? (1 - mdist / 90) * 8 : 0;
         p.x = p.bx + (mdist > 0 ? (mdx / mdist) * mi : 0);
         p.y = p.by + displacement + (mdist > 0 ? (mdy / mdist) * mi : 0);
-        const a = Math.min(1, p.alpha + (displacement > 0 ? (displacement / 12) * 0.35 : 0) + (mi / 8) * 0.4);
+        const a = Math.min(
+          1,
+          p.alpha + (displacement > 0 ? (displacement / 12) * 0.35 : 0) + (mi / 8) * 0.4,
+        );
         ctx.beginPath();
         ctx.arc(p.x, p.y, PARTICLE_RADIUS, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(10,10,20,${a})`;
@@ -75,22 +99,37 @@ function useParticleCanvas() {
       }
     }
 
-    const onMouseMove  = (e: MouseEvent) => { const r = wrap.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; };
-    const onMouseLeave = () => { mouse.x = -999; mouse.y = -999; };
+    const onMouseMove = (e: MouseEvent) => {
+      const r = wrap.getBoundingClientRect();
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
+    };
+    const onMouseLeave = () => {
+      mouse.x = -999;
+      mouse.y = -999;
+    };
 
-    wrap.addEventListener("mousemove",  onMouseMove);
+    wrap.addEventListener("mousemove", onMouseMove);
     wrap.addEventListener("mouseleave", onMouseLeave);
     window.addEventListener("resize", resize);
 
     resize();
     rafId = requestAnimationFrame(draw);
     setTimeout(() => triggerRipple(W / 2, H / 2, 1.2), 200);
-    const interval = setInterval(() => triggerRipple(W * (0.2 + Math.random() * 0.6), H * (0.2 + Math.random() * 0.6), 0.7 + Math.random() * 0.3), 2200);
+    const interval = setInterval(
+      () =>
+        triggerRipple(
+          W * (0.2 + Math.random() * 0.6),
+          H * (0.2 + Math.random() * 0.6),
+          0.7 + Math.random() * 0.3,
+        ),
+      2200,
+    );
 
     return () => {
       cancelAnimationFrame(rafId);
       clearInterval(interval);
-      wrap.removeEventListener("mousemove",  onMouseMove);
+      wrap.removeEventListener("mousemove", onMouseMove);
       wrap.removeEventListener("mouseleave", onMouseLeave);
       window.removeEventListener("resize", resize);
     };
@@ -178,8 +217,14 @@ export default function Footer() {
   const { canvasRef, wrapRef } = useParticleCanvas();
 
   return (
-    <footer ref={wrapRef} className="relative w-full border-t border-line bg-paper overflow-hidden">
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+    <footer
+      ref={wrapRef}
+      className="relative w-full border-t border-line bg-paper overflow-hidden"
+    >
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none"
+      />
       <Container className="relative z-10">
         <div className="flex flex-col gap-10 py-16 md:flex-row md:items-start md:justify-between">
           <div className="flex flex-col gap-5">

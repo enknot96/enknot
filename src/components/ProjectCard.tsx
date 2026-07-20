@@ -14,19 +14,23 @@ type Props = {
 export default function ProjectCard({ project, index }: Props) {
   return (
     <motion.div
+      className="h-full"
       initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.6, ease: EASE, delay: (index % 3) * 0.08 }}
     >
-      <Link href={`/work/${project.slug}`} className="block group">
+      <Link
+        href={`/work/${project.slug}`}
+        className="block group h-full"
+      >
         <motion.div
-          className="relative overflow-hidden rounded-base border border-line bg-surface"
+          className="relative overflow-hidden rounded-base border border-line bg-surface h-full flex flex-col"
           whileHover={{ borderColor: "#cccccc" }}
           transition={{ duration: 0.2 }}
         >
           {/* Thumbnail */}
-          <div className="w-full aspect-video flex items-center justify-center bg-shade">
+          <div className="w-full aspect-video flex items-center justify-center bg-shade shrink-0">
             {project.thumbnail ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -41,16 +45,16 @@ export default function ProjectCard({ project, index }: Props) {
             )}
           </div>
 
-          <div className="p-6">
+          <div className="p-6 flex flex-col flex-1">
             <Eyebrow className="mb-3 tracking-[0.15em]">
-              {project.techStack.slice(0, 2).join(" · ")}
+              {project.category}
             </Eyebrow>
 
             <h3 className="mb-2 font-display font-semibold text-ink text-[18px] tracking-[-0.01em]">
               {project.title}
             </h3>
 
-            <p className="font-body font-light text-subtle text-[14px] leading-[1.65]">
+            <p className="font-body font-light text-subtle text-[14px] leading-[1.65] flex-1">
               {project.description}
             </p>
 
