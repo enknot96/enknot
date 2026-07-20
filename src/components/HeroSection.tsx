@@ -195,7 +195,7 @@ export default function HeroSection() {
         </motion.h1>
 
         <motion.p
-          className="mb-10 max-w-sm mx-auto font-body font-light text-subtle text-[15px] leading-[1.75]"
+          className="mb-10 max-w-sm mx-auto font-display font-light text-subtle text-[15px] leading-[1.75]"
           custom={0.7}
           variants={fadeUp}
           initial="hidden"

@@ -10,22 +10,18 @@ const D = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
 const S = "https://cdn.simpleicons.org";
 
 const SKILLS = [
-  { name: "JavaScript", url: `${D}/javascript/javascript-original.svg` },
   { name: "TypeScript", url: `${D}/typescript/typescript-original.svg` },
   { name: "React", url: `${D}/react/react-original.svg` },
   { name: "Next.js", url: `${D}/nextjs/nextjs-original.svg` },
-  { name: "Node.js", url: `${D}/nodejs/nodejs-original.svg` },
+  { name: "GSAP", url: `${S}/gsap` },
   { name: "Three.js", url: `${D}/threejs/threejs-original.svg` },
-  { name: "PHP", url: `${D}/php/php-original.svg` },
+  { name: "Blender", url: `${D}/blender/blender-original.svg` },
   { name: "Laravel", url: `${D}/laravel/laravel-original.svg` },
   { name: "MySQL", url: `${D}/mysql/mysql-original.svg` },
-  { name: "PostgreSQL", url: `${D}/postgresql/postgresql-original.svg` },
   { name: "Supabase", url: `${S}/supabase` },
   { name: "Neon", url: `${S}/neon` },
   { name: "AWS", url: `${D}/amazonwebservices/amazonwebservices-plain-wordmark.svg` },
   { name: "Docker", url: `${D}/docker/docker-original.svg` },
-  { name: "Claude", url: `${S}/claude` },
-  { name: "Vercel AI SDK", url: `${S}/vercel` },
 ];
 
 export default function AboutSection() {
@@ -64,8 +60,11 @@ export default function AboutSection() {
               className="font-body font-light text-muted text-[16px] leading-[1.85]"
               {...reveal(0.2)}
             >
-              自己紹介文をここに書きます。どんなことをしているか、何に興味があるか、
-              どんなものを作ってきたかを 2〜3 文で。
+              新卒で積水ハウス株式会社に入社し、営業として6年間経験を積みました。退職後は約1年半、海外で生活。
+              帰国後はフルスタックエンジニアとして転職し、キャリアを再スタートしました。現在は会社の基幹システムや
+              Webアプリケーション開発を中心に、サーバー構築・メールDNS設定までITに幅広く携わっています。
+              プライベートでもコーディングを楽しみながら、AI（Claudeなど）を活用した効率的な開発を追求し、
+              日々新しい技術をキャッチアップしています。
             </motion.p>
           </div>
 

@@ -28,13 +28,17 @@ export default function PortfolioGrid() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          Selected Projects
+          ポートフォリオ
         </motion.h2>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projects.map((project, i) => (
-          <ProjectCard key={project.slug} project={project} index={i} />
+          <ProjectCard
+            key={project.slug}
+            project={project}
+            index={i}
+          />
         ))}
       </div>
     </Section>
