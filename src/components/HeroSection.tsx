@@ -178,7 +178,7 @@ export default function HeroSection() {
         </motion.p>
 
         <motion.h1
-          className="mb-6 font-display font-bold text-ink text-[clamp(52px,10vw,100px)] leading-[1.0] tracking-[-0.03em]"
+          className="mb-6 font-hero text-ink text-[clamp(52px,10vw,100px)] leading-none tracking-[0.01em]"
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
@@ -195,15 +195,13 @@ export default function HeroSection() {
         </motion.h1>
 
         <motion.p
-          className="mb-10 max-w-sm mx-auto font-body font-light text-subtle text-[15px] leading-[1.75]"
+          className="mb-10 max-w-sm mx-auto font-display font-light text-subtle text-[15px] leading-[1.75]"
           custom={0.7}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
         >
-          AI &amp; Engineering
-          <br />
-          Building things that feel right.
+          AI × Web Developer
         </motion.p>
 
         <motion.a
