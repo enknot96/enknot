@@ -3,7 +3,7 @@
 @theme {
   /* Colors */
   --color-paper: #fafafa; /* ページ背景 */
-  --color-ink: #0a0a0f; /* 主要テキスト */
+  --color-ink: #14141a; /* 主要テキスト */
   --color-muted: #666677; /* 本文 */
   --color-subtle: #888899; /* 補助テキスト */
   --color-faint: #bbbbcc; /* ラベル・控えめなUI */
@@ -13,8 +13,10 @@
   --color-shade: #ebebef; /* サムネ等のプレースホルダ面 */
 
   /* Fonts */
-  --font-display: "Space Grotesk", sans-serif;
-  --font-body: "Inter", sans-serif;
+  --font-display: "Roboto Mono", "Noto Sans JP", sans-serif;
+  --font-body: "Noto Sans JP", sans-serif;
+  --font-hero: "Anton", sans-serif;
+  --font-noto: "Noto Sans JP", sans-serif;
 
   /* Radius（全体で統一） */
   --radius-base: 2px;
