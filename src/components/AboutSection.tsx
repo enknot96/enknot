@@ -57,14 +57,22 @@ export default function AboutSection() {
             </motion.h2>
 
             <motion.p
-              className="font-body font-light text-muted text-[16px] leading-[1.85]"
+              className="mb-4 font-body font-light text-muted text-[16px] leading-[1.85]"
               {...reveal(0.2)}
             >
               新卒で積水ハウス株式会社に入社し、営業として6年間経験を積みました。退職後は約1年半、海外で生活。
               帰国後はフルスタックエンジニアとして転職し、キャリアを再スタートしました。現在は会社の基幹システムや
               Webアプリケーション開発を中心に、サーバー構築・メールDNS設定までITに幅広く携わっています。
-              プライベートでもコーディングを楽しみながら、AI（Claudeなど）を活用した効率的な開発を追求し、
-              日々新しい技術をキャッチアップしています。
+            </motion.p>
+
+            <motion.p
+              className="font-body font-light text-muted text-[16px] leading-[1.85]"
+              {...reveal(0.25)}
+            >
+              子供の頃からパズルやレゴなどモノづくりが好きで、エンジニアという仕事にもどこか似た感覚があり、
+              今も楽しみながら熱中しています。プライベートでもコーディングを楽しみながら、AI（Claudeなど）を
+              活用した効率的な開発を追求し、日々新しい技術をキャッチアップしています。趣味は読書・キャンプ・茶道で、
+              子供の頃はサッカーに打ち込んでいました。
             </motion.p>
           </div>
 
