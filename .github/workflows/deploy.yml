@@ -28,7 +28,8 @@ jobs:
               "set -e",
               "git config --system --add safe.directory /home/ec2-user/enknot",
               "cd /home/ec2-user/enknot",
-              "git pull origin main",
+              "git fetch origin main",
+              "git reset --hard origin/main",
               "docker build -t enknot .",
               "docker stop enknot || true",
               "docker rm enknot || true",
@@ -41,7 +42,9 @@ jobs:
 
           aws ssm wait command-executed \
             --command-id "$COMMAND_ID" \
-            --instance-id "${{ secrets.EC2_INSTANCE_ID }}" || true
+            --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
+            --cli-read-timeout 0 \
+            --waiter-config Delay=15,MaxAttempts=60 || true
 
           echo "=== stdout ==="
           aws ssm get-command-invocation \
