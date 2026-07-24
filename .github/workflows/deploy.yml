@@ -26,7 +26,7 @@ jobs:
             --document-name "AWS-RunShellScript" \
             --parameters commands='[
               "set -e",
-              "git config --global --add safe.directory /home/ec2-user/enknot",
+              "git config --system --add safe.directory /home/ec2-user/enknot",
               "cd /home/ec2-user/enknot",
               "git pull origin main",
               "docker build -t enknot .",
