@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { fadeUp, staggerContainer, wordReveal } from "@/lib/motion";
 import { useShouldRender3D } from "@/lib/useShouldRender3D";
+import Hero3DErrorBoundary from "./hero3d/Hero3DErrorBoundary";
 
 const Hero3DScene = dynamic(() => import("./hero3d/Hero3DScene"), { ssr: false });
 
@@ -33,6 +34,8 @@ export default function HeroSection() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const mouse3DRef = useRef<{ x: number; y: number } | null>(null);
   const shouldRender3D = useShouldRender3D();
+  const [has3DError, setHas3DError] = useState(false);
+  const show3D = shouldRender3D && !has3DError;
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -189,17 +192,19 @@ export default function HeroSection() {
         </motion.p>
 
         <div className="relative mb-6 h-[clamp(140px,20vw,220px)] w-screen ml-[calc(50%-50vw)] flex items-center justify-center">
-          {shouldRender3D && (
+          {show3D && (
             <div
               className="absolute inset-0"
               aria-hidden="true"
             >
-              <Hero3DScene mouseRef={mouse3DRef} />
+              <Hero3DErrorBoundary onError={() => setHas3DError(true)}>
+                <Hero3DScene mouseRef={mouse3DRef} />
+              </Hero3DErrorBoundary>
             </div>
           )}
           <motion.h1
             className={`font-hero font-bold text-ink text-[clamp(52px,10vw,100px)] leading-none tracking-[0.01em] ${
-              shouldRender3D ? "sr-only" : ""
+              show3D ? "sr-only" : ""
             }`}
             variants={staggerContainer}
             initial="hidden"
