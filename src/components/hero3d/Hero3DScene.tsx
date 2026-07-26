@@ -2,6 +2,8 @@
 
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
+import { Environment } from "@react-three/drei";
+import * as THREE from "three";
 import EnknotModel from "./EnknotModel";
 
 type Props = {
@@ -12,19 +14,19 @@ export default function Hero3DScene({ mouseRef }: Props) {
   return (
     <Canvas
       camera={{ position: [0, 0, 5], fov: 35 }}
-      gl={{ alpha: true, antialias: true }}
+      gl={{
+        alpha: true,
+        antialias: true,
+        toneMapping: THREE.ACESFilmicToneMapping,
+        toneMappingExposure: 1,
+      }}
       dpr={[1, 2]}
     >
-      <ambientLight intensity={0.1} />
-      <directionalLight
-        position={[3, 4, 5]}
-        intensity={0.1}
-      />
-      <directionalLight
-        position={[-3, -2, 2]}
-        intensity={0.2}
-      />
       <Suspense fallback={null}>
+        <Environment
+          preset="studio"
+          environmentIntensity={0.04}
+        />
         <EnknotModel mouseRef={mouseRef} />
       </Suspense>
     </Canvas>
