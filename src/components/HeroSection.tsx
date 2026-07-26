@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { fadeUp, staggerContainer, wordReveal } from "@/lib/motion";
+import { useShouldRender3D } from "@/lib/useShouldRender3D";
+
+const Hero3DScene = dynamic(() => import("./hero3d/Hero3DScene"), { ssr: false });
 
 const SPACING = 36;
 const PARTICLE_RADIUS = 1.5;
@@ -27,6 +31,9 @@ type Ripple = {
 export default function HeroSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const mouse3DRef = useRef<{ x: number; y: number } | null>(null);
+  const shouldRender3D = useShouldRender3D();
+  const [modelReady, setModelReady] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -132,10 +139,15 @@ export default function HeroSection() {
       const rect = wrap.getBoundingClientRect();
       mouse.x = e.clientX - rect.left;
       mouse.y = e.clientY - rect.top;
+      mouse3DRef.current = {
+        x: (mouse.x / rect.width) * 2 - 1,
+        y: -((mouse.y / rect.height) * 2 - 1),
+      };
     };
     const onMouseLeave = () => {
       mouse.x = -999;
       mouse.y = -999;
+      mouse3DRef.current = null;
     };
 
     wrap.addEventListener("mousemove", onMouseMove);
@@ -177,22 +189,34 @@ export default function HeroSection() {
           Portfolio
         </motion.p>
 
-        <motion.h1
-          className="mb-6 font-hero text-ink text-[clamp(52px,10vw,100px)] leading-none tracking-[0.01em]"
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
-        >
-          {["ENKNOT"].map((word, i) => (
-            <motion.span
-              key={i}
-              className="inline-block"
-              variants={wordReveal}
+        <div className="relative mb-6 h-[clamp(140px,20vw,220px)] flex items-center justify-center">
+          {shouldRender3D && (
+            <div
+              className="absolute inset-0"
+              aria-hidden="true"
             >
-              {word}
-            </motion.span>
-          ))}
-        </motion.h1>
+              <Hero3DScene mouseRef={mouse3DRef} onReady={() => setModelReady(true)} />
+            </div>
+          )}
+          <motion.h1
+            className={`font-hero text-ink text-[clamp(52px,10vw,100px)] leading-none tracking-[0.01em] ${
+              shouldRender3D && modelReady ? "sr-only" : ""
+            }`}
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+          >
+            {["ENKNOT"].map((word, i) => (
+              <motion.span
+                key={i}
+                className="inline-block"
+                variants={wordReveal}
+              >
+                {word}
+              </motion.span>
+            ))}
+          </motion.h1>
+        </div>
 
         <motion.p
           className="mb-10 max-w-sm mx-auto font-display font-light text-subtle text-[15px] leading-[1.75]"
