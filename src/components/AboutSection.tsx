@@ -60,24 +60,23 @@ export default function AboutSection() {
               className="mb-4 font-body font-light text-muted text-[16px] leading-[1.85]"
               {...reveal(0.2)}
             >
-              新卒で積水ハウス株式会社に入社し、営業として6年間経験を積みました。退職後は約1年半、海外で生活。
-              帰国後はフルスタックエンジニアとして転職し、キャリアを再スタートしました。現在は会社の基幹システムや
-              Webアプリケーション開発を中心に、サーバー構築・メールDNS設定までITに幅広く携わっています。
+              新卒で積水ハウス株式会社に入社し、営業として6年間経験を積みました。退職後は約1年半海外で生活し、
+              帰国後はフルスタックエンジニアとして転職、キャリアを再スタートしました。現在は基幹システムやWebアプリ開発を中心に、
+              サーバー構築・メールDNS設定までITに幅広く携わっています。
             </motion.p>
 
             <motion.p
               className="font-body font-light text-muted text-[16px] leading-[1.85]"
               {...reveal(0.25)}
             >
-              子供の頃からパズルやレゴなどモノづくりが好きで、エンジニアという仕事にもどこか似た感覚があり、
-              今も楽しみながら熱中しています。プライベートでもコーディングを楽しみながら、AI（Claudeなど）を
-              活用した効率的な開発を追求し、日々新しい技術をキャッチアップしています。趣味は読書・キャンプ・茶道で、
-              子供の頃はサッカーに打ち込んでいました。
+              子供の頃からパズルやレゴなどモノづくりが好きで、エンジニアという仕事にも通じるものを感じ、今も楽しみながら熱中しています。
+              プライベートでもコーディングを楽しみつつ、AI(Claudeなど)を活用した効率的な開発を追求し、新しい技術を日々キャッチアップしています。
+              趣味は読書とキャンプ、子供の頃はサッカーに打ち込んでいました。推しはちいかわのモモンガです。
             </motion.p>
           </div>
 
           <motion.div {...reveal(0.3)}>
-            <Eyebrow className="mb-6">Skills</Eyebrow>
+            <Eyebrow className="mb-6">Favorite Skills</Eyebrow>
             <div className="grid grid-cols-4 gap-x-6 gap-y-8">
               {SKILLS.map((skill) => (
                 <div

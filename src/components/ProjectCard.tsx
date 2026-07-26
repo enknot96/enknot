@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Project } from "@/data/projects";
 import Eyebrow from "@/components/ui/Eyebrow";
+import ArrowUpRightIcon from "@/components/ui/ArrowUpRightIcon";
 import { EASE } from "@/lib/motion";
 
 type Props = {
@@ -63,7 +64,7 @@ export default function ProjectCard({ project, index }: Props) {
               whileHover={{ color: "#0a0a0f" }}
               transition={{ duration: 0.2 }}
             >
-              View project <span className="text-[9px]">→</span>
+              View project <ArrowUpRightIcon />
             </motion.div>
           </div>
         </motion.div>
