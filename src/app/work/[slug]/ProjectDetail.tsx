@@ -46,7 +46,11 @@ export default function ProjectDetail({ project }: Props) {
             {...fadeUpProps(0.25)}
           >
             {project.liveUrl ? (
-              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={project.thumbnail}
@@ -181,16 +185,15 @@ export default function ProjectDetail({ project }: Props) {
                 </thead>
                 <tbody>
                   {project.demoAccounts.map((account) => (
-                    <tr key={account.email} className="border-b border-line last:border-0">
+                    <tr
+                      key={account.email}
+                      className="border-b border-line last:border-0"
+                    >
                       <td className="py-3 pr-4 font-body text-muted text-[14px] whitespace-nowrap">
                         {account.role}
                       </td>
-                      <td className="py-3 pr-4 font-mono text-ink text-[13px]">
-                        {account.email}
-                      </td>
-                      <td className="py-3 font-mono text-ink text-[13px]">
-                        {account.password}
-                      </td>
+                      <td className="py-3 pr-4 font-mono text-ink text-[13px]">{account.email}</td>
+                      <td className="py-3 font-mono text-ink text-[13px]">{account.password}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -199,6 +202,15 @@ export default function ProjectDetail({ project }: Props) {
             <p className="mt-4 font-body text-faint text-[13px]">
               ポートフォリオ公開用のデモアカウントです。決済はStripeのテストモードのみで動作します。
             </p>
+            {project.slug === "bookstore" && (
+              <div className="mt-3 space-y-1 font-body text-muted text-[13px]">
+                <p>
+                  テストカード番号: <span className="font-mono text-ink">4242 4242 4242 4242</span>
+                </p>
+                <p>有効期限: 任意の未来の日付</p>
+                <p>セキュリティコード: 任意の3桁</p>
+              </div>
+            )}
           </motion.div>
         )}
       </Container>

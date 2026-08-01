@@ -25,7 +25,7 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 - Next.js 16 (App Router) を Docker コンテナ化し、AWS EC2 (t3.micro) 上で Nginx リバースプロキシ経由で稼働
 - GitHub Actions による CI/CD：`main` ブランチへの push で自動デプロイ
 - デプロイ・保守アクセスともに SSH ポートを外部公開せず、AWS Systems Manager（Session Manager / Run Command）経由でアクセス。GitHub Actions は OIDC で AWS に認証し、長期のアクセスキーを保持しない構成
-- HTTPS 配信は Cloudflare 経由、Nginx の Basic 認証でアクセス制御
+- HTTPS 配信は Let's Encrypt（Certbot）証明書を使用
 
 ## Learn More
 
