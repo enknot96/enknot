@@ -219,8 +219,8 @@ export default function Footer() {
               <Image
                 src="/enknot.png"
                 alt="ENKNOT"
-                width={58}
-                height={58}
+                width={64}
+                height={64}
                 className="rounded-full border border-line"
               />
               <div>
