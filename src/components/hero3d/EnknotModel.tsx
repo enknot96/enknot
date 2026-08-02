@@ -5,10 +5,10 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useGLTF, Center } from "@react-three/drei";
 import * as THREE from "three";
 
-const MODEL_PATH = "/models/enknot.glb";
+const MODEL_PATH = "/models/enknot_logo02.glb";
 
 // 目視調整用パラメータ（すべて仮値）。
-const MODEL_SCALE = 0.45;
+const MODEL_SCALE = 1.08;
 const TARGET_PLANE_Z = 2.2;
 const TARGET_PLANE_RANGE = 0.6;
 const DAMPING = 6;

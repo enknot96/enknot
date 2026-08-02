@@ -25,7 +25,7 @@ export default function Hero3DScene({ mouseRef }: Props) {
       <Suspense fallback={null}>
         <Environment
           preset="studio"
-          environmentIntensity={0.04}
+          environmentIntensity={0.5}
         />
         <EnknotModel mouseRef={mouseRef} />
       </Suspense>
