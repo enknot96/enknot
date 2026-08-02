@@ -4,8 +4,16 @@ import Footer from "@/components/Footer";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://enknot.dev"),
   title: "ENKNOT｜AI × Web Developer",
   description: "Portfolio — AI & Engineering",
+  openGraph: {
+    title: "ENKNOT｜AI × Web Developer",
+    description: "Portfolio — AI & Engineering",
+    siteName: "ENKNOT",
+    type: "website",
+    locale: "ja_JP",
+  },
 };
 
 export default function RootLayout({
