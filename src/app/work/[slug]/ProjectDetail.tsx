@@ -69,6 +69,20 @@ export default function ProjectDetail({ project }: Props) {
           </motion.div>
         )}
 
+        {project.demoVideoUrl && (
+          <motion.div
+            className="mb-16"
+            {...fadeUpProps(0.28)}
+          >
+            <Eyebrow className="mb-4">デモ動画</Eyebrow>
+            <video
+              src={project.demoVideoUrl}
+              controls
+              className="w-full rounded-base"
+            />
+          </motion.div>
+        )}
+
         <motion.div
           className="mb-12"
           {...fadeUpProps(0.3)}
