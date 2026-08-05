@@ -191,8 +191,8 @@ function BlogIcon() {
 }
 
 const SOCIAL = [
-  { label: "GitHub", href: "https://github.com", icon: GitHubIcon },
-  { label: "X", href: "https://x.com", icon: XIcon },
+  { label: "GitHub", href: "https://github.com/enknot96", icon: GitHubIcon },
+  { label: "X", href: "https://x.com/enknot96", icon: XIcon },
   { label: "Blog", href: "https://jp-tagr.com/", icon: BlogIcon },
 ];
 

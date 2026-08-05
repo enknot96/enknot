@@ -13,13 +13,16 @@ const SKILLS = [
   { name: "TypeScript", url: `${D}/typescript/typescript-original.svg` },
   { name: "React", url: `${D}/react/react-original.svg` },
   { name: "Next.js", url: `${D}/nextjs/nextjs-original.svg` },
+  { name: "Astro", url: `${D}/astro/astro-original.svg` },
   { name: "GSAP", url: `${S}/gsap` },
   { name: "Three.js", url: `${D}/threejs/threejs-original.svg` },
   { name: "Blender", url: `${D}/blender/blender-original.svg` },
+  { name: "PHP", url: `${D}/php/php-plain.svg` },
   { name: "Laravel", url: `${D}/laravel/laravel-original.svg` },
+  { name: "WordPress", url: `${D}/wordpress/wordpress-plain.svg` },
   { name: "MySQL", url: `${D}/mysql/mysql-original.svg` },
   { name: "Supabase", url: `${S}/supabase` },
-  { name: "Neon", url: `${S}/neon` },
+  { name: "Vercel", url: `${D}/vercel/vercel-original.svg` },
   { name: "AWS", url: `${D}/amazonwebservices/amazonwebservices-plain-wordmark.svg` },
   { name: "Docker", url: `${D}/docker/docker-original.svg` },
 ];
@@ -60,23 +63,29 @@ export default function AboutSection() {
               className="mb-4 font-body font-light text-muted text-[16px] leading-[1.85]"
               {...reveal(0.2)}
             >
-              新卒で積水ハウス株式会社に入社し、営業として6年間経験を積みました。退職後は約1年半海外で生活し、
-              帰国後はフルスタックエンジニアとして転職、キャリアを再スタートしました。現在は基幹システムやWebアプリ開発を中心に、
-              サーバー構築・メールDNS設定までITに幅広く携わっています。
+              新卒で積水ハウス株式会社に入社し、営業として6年間経験を積みました（宅地建物取引士）。退職後は約1年半の海外生活を経て、
+              Webエンジニアとしてキャリアを再スタート。現在は基幹システムやWebアプリ開発を中心に、AIを活用した開発、サーバー構築まで幅広く携わっています。
+            </motion.p>
+
+            <motion.p
+              className="mb-4 font-body font-light text-muted text-[16px] leading-[1.85]"
+              {...reveal(0.25)}
+            >
+              営業時代に培った顧客対応や業務プロセスの知見は、エンジニアとしての仕事、そして、AIエージェントの判断ロジックにも活かしています。
+              趣味は読書とキャンプ、子供の頃はサッカーに打ち込んでいました。推しはちいかわのモモンガです。
             </motion.p>
 
             <motion.p
               className="font-body font-light text-muted text-[16px] leading-[1.85]"
-              {...reveal(0.25)}
+              {...reveal(0.3)}
             >
-              子供の頃からパズルやレゴなどモノづくりが好きで、エンジニアという仕事にも通じるものを感じ、今も楽しみながら熱中しています。
-              プライベートでもコーディングを楽しみつつ、AI(Claudeなど)を活用した効率的な開発を追求し、新しい技術を日々キャッチアップしています。
-              趣味は読書とキャンプ、子供の頃はサッカーに打ち込んでいました。推しはちいかわのモモンガです。
+              業務委託でのお仕事を受け付けています。日中はチャットのやり取り、実装は朝や夜間・週末を中心に進めるスタイルで、
+              週30時間前後（状況に応じて最大40時間まで調整可）対応可能です。お気軽にお申し付けください。
             </motion.p>
           </div>
 
           <motion.div {...reveal(0.3)}>
-            <Eyebrow className="mb-6">Favorite Skills</Eyebrow>
+            <Eyebrow className="mb-6">Skills</Eyebrow>
             <div className="grid grid-cols-4 gap-x-6 gap-y-8">
               {SKILLS.map((skill) => (
                 <div
