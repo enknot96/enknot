@@ -12,18 +12,19 @@ const S = "https://cdn.simpleicons.org";
 const SKILLS = [
   { name: "TypeScript", url: `${D}/typescript/typescript-original.svg` },
   { name: "React", url: `${D}/react/react-original.svg` },
+  { name: "Vue", url: `${D}/vuejs/vuejs-original.svg` },
   { name: "Next.js", url: `${D}/nextjs/nextjs-original.svg` },
-  { name: "Astro", url: `${D}/astro/astro-original.svg` },
   { name: "GSAP", url: `${S}/gsap` },
   { name: "Three.js", url: `${D}/threejs/threejs-original.svg` },
   { name: "Blender", url: `${D}/blender/blender-original.svg` },
   { name: "PHP", url: `${D}/php/php-plain.svg` },
   { name: "Laravel", url: `${D}/laravel/laravel-original.svg` },
   { name: "WordPress", url: `${D}/wordpress/wordpress-plain.svg` },
-  { name: "MySQL", url: `${D}/mysql/mysql-original.svg` },
   { name: "Supabase", url: `${S}/supabase` },
-  { name: "Vercel", url: `${D}/vercel/vercel-original.svg` },
+  { name: "Mastra", url: "/icons/mastra.png" },
+  { name: "Linux", url: `${D}/linux/linux-original.svg` },
   { name: "AWS", url: `${D}/amazonwebservices/amazonwebservices-plain-wordmark.svg` },
+  { name: "Vercel", url: `${D}/vercel/vercel-original.svg` },
   { name: "Docker", url: `${D}/docker/docker-original.svg` },
 ];
 
@@ -63,7 +64,7 @@ export default function AboutSection() {
               className="mb-4 font-body font-light text-muted text-[16px] leading-[1.85]"
               {...reveal(0.2)}
             >
-              新卒で積水ハウス株式会社に入社し、営業として6年間経験を積みました（宅地建物取引士）。退職後は約1年半の海外生活を経て、
+              新卒でハウスメーカーに入社し、営業として6年間経験を積みました（宅地建物取引士）。退職後は約1年半の海外生活を経て、
               Webエンジニアとしてキャリアを再スタート。現在は基幹システムやWebアプリ開発を中心に、AIを活用した開発、サーバー構築まで幅広く携わっています。
             </motion.p>
 
@@ -72,15 +73,15 @@ export default function AboutSection() {
               {...reveal(0.25)}
             >
               営業時代に培った顧客対応や業務プロセスの知見は、エンジニアとしての仕事、そして、AIエージェントの判断ロジックにも活かしています。
-              趣味は読書とキャンプ、子供の頃はサッカーに打ち込んでいました。推しはちいかわのモモンガです。
+              趣味は読書とキャンプ、子供の頃はサッカーに打ち込んでいました。
             </motion.p>
 
             <motion.p
               className="font-body font-light text-muted text-[16px] leading-[1.85]"
               {...reveal(0.3)}
             >
-              業務委託でのお仕事を受け付けています。日中はチャットのやり取り、実装は朝や夜間・週末を中心に進めるスタイルで、
-              週30時間前後（状況に応じて最大40時間まで調整可）対応可能です。お気軽にお申し付けください。
+              業務委託でのお仕事を受け付けています。日中は本業のためチャットベースでの対応、実装は朝・夜間・週末を中心に進めるスタイルです。
+              稼働時間・定例MTへの参加はご相談に応じて調整します。
             </motion.p>
           </div>
 
