@@ -175,7 +175,7 @@ export const projects: Project[] = [
     thumbnail: "/thumbnails/umigame.png",
     category: "Web制作",
     type: "client",
-    title: "心理カウンセリングサービスサイト",
+    title: "心理カウンセリング サービスサイト",
     description: "Umigame Counseling — セブ島発のオンライン/対面カウンセリングサイト",
     longDescription:
       "セブ島在住の公認心理師によるオンライン/対面カウンセリングサービスのサイト。仕事のストレスや子育て、キャリアの悩みに向き合うカウンセリングを、安心感のあるビジュアルと予約導線で伝えられるよう設計しました。",
