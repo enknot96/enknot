@@ -123,7 +123,7 @@ export const projects: Project[] = [
   },
   {
     slug: "acthouse",
-    thumbnail: "/thumbnails/it.png",
+    thumbnail: "/thumbnails/act.png",
     category: "Web制作",
     type: "client",
     title: "セブ島IT留学コーポレートサイト",
@@ -138,7 +138,7 @@ export const projects: Project[] = [
   },
   {
     slug: "chienokinomi-books",
-    thumbnail: "/thumbnails/childbook.png",
+    thumbnail: "/thumbnails/chiebook.png",
     category: "Web制作",
     type: "client",
     title: "児童書専門店コーポレートサイト",
@@ -151,5 +151,78 @@ export const projects: Project[] = [
     highlights: ["新着書籍情報", "店舗案内", "CMS 管理画面"],
     liveUrl: "https://www.chienokinomi-books.jp/",
     relatedProject: { slug: "bookstore", label: "オンライン書店ECサイトを見る" },
+  },
+  {
+    slug: "primesign-3bs",
+    thumbnail: "/thumbnails/prime.png",
+    category: "Web制作",
+    type: "client",
+    title: "ガラス面広告サービス販売LP",
+    description: "3Bs社「プライムサイン」販売用LP — GSAPアニメーション",
+    longDescription:
+      "店舗の窓を動く広告に変える集客ソリューション「プライムサイン」を、代理販売する3Bs社向けに制作したランディングページ。GSAPによるスクロールアニメーションで商品の訴求力を高め、問い合わせ導線を設計しました。",
+    techStack: ["HTML", "CSS", "JavaScript", "GSAP"],
+    story:
+      "デザイン・実装に加えて営業提案までを一人で担当。ガラス面という新しい広告媒体の価値を、視覚的なアニメーションでどう伝えるかを意識して制作しました。",
+    highlights: [
+      "GSAPによるスクロール連動アニメーション",
+      "ガラス面広告という新しい商材の価値をLP設計で可視化",
+    ],
+    liveUrl: "https://primesign-peacebiz-3bs.jp/",
+  },
+  {
+    slug: "umigame-counseling",
+    thumbnail: "/thumbnails/umigame.png",
+    category: "Web制作",
+    type: "client",
+    title: "心理カウンセリングサービスサイト",
+    description: "Umigame Counseling — セブ島発のオンライン/対面カウンセリングサイト",
+    longDescription:
+      "セブ島在住の公認心理師によるオンライン/対面カウンセリングサービスのサイト。仕事のストレスや子育て、キャリアの悩みに向き合うカウンセリングを、安心感のあるビジュアルと予約導線で伝えられるよう設計しました。",
+    techStack: ["HTML", "CSS", "JavaScript", "GSAP", "Three.js", "TimeRex"],
+    story:
+      "デザイン・実装・営業提案まで一人で担当。心理カウンセリングという伝わりにくいテーマを、水面のような柔らかいビジュアル表現で補う設計にしました。",
+    highlights: [
+      "TimeRex埋め込みによるオンライン予約機能",
+      "note連携によるブログ発信導線",
+      "GSAP・Three.jsによる水面リップル/バルジ表現",
+    ],
+    liveUrl: "https://yukahaya.sunnyday.jp/",
+  },
+  {
+    slug: "ava-utsunomiya",
+    thumbnail: "/thumbnails/ava.png",
+    category: "Web制作",
+    type: "client",
+    title: "カーコーティング専門店LP",
+    description: "栃木県宇都宮市のカーコーティング専門店LP",
+    longDescription:
+      "プロ職人による高級カーコーティングを提供する店舗のLPを制作。技術説明・料金プラン・施工実績・お客様の声までを掲載し、来店・問い合わせにつながる構成にしました。",
+    techStack: ["HTML", "CSS", "JavaScript"],
+    story:
+      "デザインから実装、営業提案まで一人で担当。専門的な技術内容を、施工実績とお客様の声で裏付けながら伝える構成を意識しました。",
+    highlights: [
+      "ビフォーアフターによる施工実績訴求",
+      "料金プラン・お客様の声・FAQを含む一気通貫のLP構成",
+    ],
+    liveUrl: "https://ava-utsunomiya.com/",
+  },
+  {
+    slug: "marunage",
+    thumbnail: "/thumbnails/marunage.png",
+    category: "Web制作",
+    type: "client",
+    title: "EC販売支援コンサルLP",
+    description: "まるなげ — Amazon・楽天のEC改善支援サービスLP",
+    longDescription:
+      "Amazon・楽天などのEC事業者向けに、現状分析から実行支援までを一括代行する「まるなげ」のサービスLPを制作。課題喚起から料金プラン、事例紹介まで、問い合わせにつながる訴求構成を設計しました。",
+    techStack: ["HTML", "CSS", "JavaScript"],
+    story:
+      "デザインから実装、営業提案まで一人で担当。EC事業者が抱える「売れない理由がわからない」という悩みに寄り添う構成を意識しました。",
+    highlights: [
+      "課題喚起→根本原因→改善プロセスの訴求構成",
+      "料金プラン・FAQ・事例紹介までワンページで完結",
+    ],
+    liveUrl: "https://www.marunage-rp.jp/",
   },
 ];

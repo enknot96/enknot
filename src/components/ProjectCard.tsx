@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Project } from "@/data/projects";
 import Eyebrow from "@/components/ui/Eyebrow";
-import Chip from "@/components/ui/Chip";
 import ArrowUpRightIcon from "@/components/ui/ArrowUpRightIcon";
 import { EASE } from "@/lib/motion";
 
@@ -48,12 +47,7 @@ export default function ProjectCard({ project, index }: Props) {
           </div>
 
           <div className="p-6 flex flex-col flex-1">
-            <div className="mb-3 flex items-center gap-2">
-              <Eyebrow className="tracking-[0.15em]">{project.category}</Eyebrow>
-              <Chip>
-                {project.type === "client" ? "クライアント案件" : "個人開発"}
-              </Chip>
-            </div>
+            <Eyebrow className="mb-3 tracking-[0.15em]">{project.category}</Eyebrow>
 
             <h3 className="mb-2 font-noto font-semibold text-ink text-[18px] tracking-[-0.01em]">
               {project.title}

@@ -6,6 +6,9 @@ import { projects } from "@/data/projects";
 import Section from "@/components/ui/Section";
 import ProjectCard from "./ProjectCard";
 
+const clientProjects = projects.filter((p) => p.type === "client");
+const personalProjects = projects.filter((p) => p.type === "personal");
+
 export default function PortfolioGrid() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
@@ -23,7 +26,7 @@ export default function PortfolioGrid() {
         </motion.p>
 
         <motion.h2
-          className="mb-16 font-display font-bold text-ink text-[clamp(24px,3.5vw,38px)] tracking-[-0.02em]"
+          className="mb-16 font-display font-bold text-ink text-[clamp(23px,3.25vw,36px)] tracking-[-0.02em]"
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
           transition={{ duration: 0.6, delay: 0.1 }}
@@ -32,8 +35,24 @@ export default function PortfolioGrid() {
         </motion.h2>
       </div>
 
+      <h3 className="mb-6 font-display font-bold text-ink text-[18px] tracking-[-0.01em]">
+        クライアント案件
+      </h3>
+      <div className="mb-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {clientProjects.map((project, i) => (
+          <ProjectCard
+            key={project.slug}
+            project={project}
+            index={i}
+          />
+        ))}
+      </div>
+
+      <h3 className="mb-6 font-display font-bold text-ink text-[18px] tracking-[-0.01em]">
+        個人開発
+      </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project, i) => (
+        {personalProjects.map((project, i) => (
           <ProjectCard
             key={project.slug}
             project={project}

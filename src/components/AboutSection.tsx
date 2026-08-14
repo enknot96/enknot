@@ -16,7 +16,6 @@ const SKILLS = [
   { name: "Next.js", url: `${D}/nextjs/nextjs-original.svg` },
   { name: "GSAP", url: `${S}/gsap` },
   { name: "Three.js", url: `${D}/threejs/threejs-original.svg` },
-  { name: "Blender", url: `${D}/blender/blender-original.svg` },
   { name: "PHP", url: `${D}/php/php-plain.svg` },
   { name: "Laravel", url: `${D}/laravel/laravel-original.svg` },
   { name: "WordPress", url: `${D}/wordpress/wordpress-plain.svg` },
@@ -46,19 +45,26 @@ export default function AboutSection() {
           className="eyebrow mb-8"
           {...reveal(0)}
         >
-          About
+          About Me
         </motion.p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           <div>
             <motion.h2
-              className="mb-8 font-display font-bold text-ink text-[clamp(28px,4vw,44px)] leading-[1.15] tracking-[-0.02em]"
+              className="mb-2 font-display font-bold text-ink text-[clamp(23px,3.25vw,36px)] leading-[1.15] tracking-[-0.02em]"
               {...reveal(0.1)}
             >
               TAMAKI Shuto
               <br />
-              <span className="font-noto font-normal text-[clamp(20px,4vw,36px)]">玉木 周統</span>
+              <span className="font-noto font-normal text-[clamp(16px,2.4vw,26px)]">玉木 周統</span>
             </motion.h2>
+
+            <motion.p
+              className="mb-8 font-body font-light text-subtle text-[13px]"
+              {...reveal(0.15)}
+            >
+              屋号：ENKNOT（エンノット）
+            </motion.p>
 
             <motion.p
               className="mb-4 font-body font-light text-muted text-[16px] leading-[1.85]"
