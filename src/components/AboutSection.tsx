@@ -11,13 +11,11 @@ const S = "https://cdn.simpleicons.org";
 
 const SKILLS = [
   { name: "TypeScript", url: `${D}/typescript/typescript-original.svg` },
-  { name: "React", url: `${D}/react/react-original.svg` },
   { name: "Vue", url: `${D}/vuejs/vuejs-original.svg` },
+  { name: "React", url: `${D}/react/react-original.svg` },
   { name: "Next.js", url: `${D}/nextjs/nextjs-original.svg` },
   { name: "Node.js", url: `${D}/nodejs/nodejs-original.svg` },
   { name: "Mastra", url: "/icons/mastra.png" },
-  { name: "GSAP", url: `${S}/gsap` },
-  { name: "Three.js", url: `${D}/threejs/threejs-original.svg` },
   { name: "PHP", url: `${D}/php/php-plain.svg` },
   { name: "Laravel", url: `${D}/laravel/laravel-original.svg` },
   { name: "WordPress", url: `${D}/wordpress/wordpress-plain.svg` },
@@ -54,13 +52,11 @@ export default function AboutSection() {
               className="mb-2 font-display font-bold text-ink text-[clamp(23px,3.25vw,36px)] leading-[1.15] tracking-[-0.02em]"
               {...reveal(0.1)}
             >
-              TAMAKI Shuto
-              <br />
-              <span className="font-noto font-normal text-[clamp(16px,2.4vw,26px)]">玉木 周統</span>
+              Shuto｜<span className="text-[0.75em] font-noto font-normal">しゅーと</span>
             </motion.h2>
 
             <motion.p
-              className="mb-8 font-body font-light text-subtle text-[13px]"
+              className="mb-8 font-body font-light text-subtle text-[14px]"
               {...reveal(0.15)}
             >
               屋号：ENKNOT（エンノット）
@@ -92,7 +88,7 @@ export default function AboutSection() {
           </div>
 
           <motion.div {...reveal(0.3)}>
-            <Eyebrow className="mb-6">Skills</Eyebrow>
+            <Eyebrow className="mb-6">Favorite Skills</Eyebrow>
             <div className="grid grid-cols-4 gap-x-6 gap-y-8">
               {SKILLS.map((skill) => (
                 <div
