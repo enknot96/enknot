@@ -11,18 +11,14 @@ const S = "https://cdn.simpleicons.org";
 
 const SKILLS = [
   { name: "TypeScript", url: `${D}/typescript/typescript-original.svg` },
-  { name: "Vue", url: `${D}/vuejs/vuejs-original.svg` },
   { name: "React", url: `${D}/react/react-original.svg` },
   { name: "Next.js", url: `${D}/nextjs/nextjs-original.svg` },
+  { name: "Astro", url: `${D}/astro/astro-original.svg` },
   { name: "Node.js", url: `${D}/nodejs/nodejs-original.svg` },
-  { name: "Mastra", url: "/icons/mastra.png" },
-  { name: "PHP", url: `${D}/php/php-plain.svg` },
   { name: "Laravel", url: `${D}/laravel/laravel-original.svg` },
-  { name: "WordPress", url: `${D}/wordpress/wordpress-plain.svg` },
   { name: "Linux", url: `${D}/linux/linux-original.svg` },
   { name: "AWS", url: `${D}/amazonwebservices/amazonwebservices-plain-wordmark.svg` },
   { name: "Vercel", url: `${D}/vercel/vercel-original.svg` },
-  { name: "Docker", url: `${D}/docker/docker-original.svg` },
 ];
 
 export default function AboutSection() {
@@ -89,7 +85,7 @@ export default function AboutSection() {
 
           <motion.div {...reveal(0.3)}>
             <Eyebrow className="mb-6">Favorite Skills</Eyebrow>
-            <div className="grid grid-cols-4 gap-x-6 gap-y-8">
+            <div className="grid grid-cols-3 gap-x-6 gap-y-8">
               {SKILLS.map((skill) => (
                 <div
                   key={skill.name}
@@ -99,9 +95,9 @@ export default function AboutSection() {
                   <img
                     src={skill.url}
                     alt={skill.name}
-                    width={36}
-                    height={36}
-                    className="w-9 h-9 object-contain"
+                    width={48}
+                    height={48}
+                    className="w-12 h-12 object-contain"
                   />
                   <span className="font-display text-[10px] font-semibold tracking-[0.15em] uppercase text-subtle text-center leading-tight">
                     {skill.name}
