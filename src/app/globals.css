@@ -68,4 +68,53 @@
     border-radius: var(--radius-base);
     padding: 0.25rem 0.75rem;
   }
+
+  /* microCMSのリッチエディタ本文（生HTML）向けの最小限のタイポグラフィ */
+  .blog-body {
+    font-family: var(--font-body);
+    font-weight: 300;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.85;
+  }
+  .blog-body > * + * {
+    margin-top: 1.5em;
+  }
+  .blog-body h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-ink);
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin-top: 2.5em;
+  }
+  .blog-body h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-ink);
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    margin-top: 2em;
+  }
+  .blog-body a {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .blog-body ul,
+  .blog-body ol {
+    padding-left: 1.5em;
+  }
+  .blog-body li + li {
+    margin-top: 0.5em;
+  }
+  .blog-body img {
+    width: 100%;
+    border-radius: var(--radius-base);
+  }
+  .blog-body blockquote {
+    border-left: 2px solid var(--color-line);
+    padding-left: 1.25em;
+    color: var(--color-subtle);
+  }
 }
