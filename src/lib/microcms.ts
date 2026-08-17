@@ -6,17 +6,10 @@ const apiKey = process.env.MICROCMS_API_KEY;
 
 const client = serviceDomain && apiKey ? createClient({ serviceDomain, apiKey }) : null;
 
-// microCMSの認証情報が未設定の間（サービス作成前のローカル開発用）はモックデータで代替する。
-const MOCK_POSTS: BlogPost[] = [
-  {
-    id: "mock-1",
-    title: "サンプル記事タイトル",
-    description: "microCMSの認証情報が未設定のため、モックデータを表示しています。",
-    body: "<p>MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY を設定すると、実際の記事が表示されます。</p>",
-    publishedAt: "2026-01-01T00:00:00.000Z",
-    updatedAt: "2026-01-01T00:00:00.000Z",
-  },
-];
+// microCMSの認証情報が未設定の間（ビルド時など）は空の一覧として振る舞う。
+// 「まだ記事がありません」という通常の空状態表示になり、開発者向けの説明文が
+// 本番の閲覧者に一瞬でも見える事態を避ける。
+const MOCK_POSTS: BlogPost[] = [];
 
 export async function getBlogList(
   queries?: MicroCMSQueries,

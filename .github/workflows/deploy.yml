@@ -30,10 +30,13 @@ jobs:
               "cd /home/ec2-user/enknot",
               "git fetch origin main",
               "git reset --hard origin/main",
+              "echo \"MICROCMS_SERVICE_DOMAIN=${{ secrets.MICROCMS_SERVICE_DOMAIN }}\" > .env",
+              "echo \"MICROCMS_API_KEY=${{ secrets.MICROCMS_API_KEY }}\" >> .env",
+              "chmod 600 .env",
               "docker build -t enknot .",
               "docker stop enknot || true",
               "docker rm enknot || true",
-              "docker run -d -p 3000:3000 --name enknot --restart always enknot"
+              "docker run -d -p 3000:3000 --name enknot --restart always --env-file /home/ec2-user/enknot/.env enknot"
             ]' \
             --query "Command.CommandId" \
             --output text)

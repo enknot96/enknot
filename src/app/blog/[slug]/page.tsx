@@ -57,7 +57,7 @@ export default async function BlogDetailPage({ params }: Props) {
 
         <p className="eyebrow mb-4">{formatDate(post.publishedAt)}</p>
 
-        <h1 className="mb-16 font-display font-bold text-ink text-[clamp(28px,4.5vw,44px)] leading-[1.25] tracking-[-0.02em]">
+        <h1 className="mb-16 font-display font-bold text-ink text-[clamp(28px,4.5vw,44px)] leading-tight tracking-[-0.02em]">
           {post.title}
         </h1>
 
