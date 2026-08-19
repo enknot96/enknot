@@ -45,18 +45,11 @@ export default function AboutSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           <div>
             <motion.h2
-              className="mb-2 font-display font-bold text-ink text-[clamp(23px,3.25vw,36px)] leading-[1.15] tracking-[-0.02em]"
+              className="mb-8 font-display font-bold text-ink text-[clamp(23px,3.25vw,36px)] leading-[1.15] tracking-[-0.02em]"
               {...reveal(0.1)}
             >
-              Shuto｜<span className="text-[0.75em] font-noto font-normal">しゅーと</span>
-            </motion.h2>
-
-            <motion.p
-              className="mb-8 font-body font-light text-subtle text-[14px]"
-              {...reveal(0.15)}
-            >
               屋号：ENKNOT（エンノット）
-            </motion.p>
+            </motion.h2>
 
             <motion.p
               className="mb-4 font-body font-light text-muted text-[16px] leading-[1.85]"
