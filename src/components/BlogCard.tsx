@@ -56,7 +56,17 @@ export default function BlogCard({ post, index }: Props) {
           </div>
 
           <div className="p-6 flex flex-col flex-1">
-            <Eyebrow className="mb-3 tracking-[0.15em]">{formatDate(post.publishedAt)}</Eyebrow>
+            <div className="mb-3 flex items-center gap-3 flex-wrap">
+              <Eyebrow className="tracking-[0.15em]">{formatDate(post.publishedAt)}</Eyebrow>
+              {post.categories?.map((c) => (
+                <span
+                  key={c.id}
+                  className="chip"
+                >
+                  {c.name}
+                </span>
+              ))}
+            </div>
 
             <h3 className="mb-2 font-noto font-semibold text-ink text-[18px] tracking-[-0.01em]">
               {post.title}

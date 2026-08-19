@@ -55,7 +55,17 @@ export default async function BlogDetailPage({ params }: Props) {
           <ArrowLeftIcon /> Back
         </Link>
 
-        <p className="eyebrow mb-4">{formatDate(post.publishedAt)}</p>
+        <div className="mb-4 flex items-center gap-3 flex-wrap">
+          <p className="eyebrow">{formatDate(post.publishedAt)}</p>
+          {post.categories?.map((c) => (
+            <span
+              key={c.id}
+              className="chip"
+            >
+              {c.name}
+            </span>
+          ))}
+        </div>
 
         <h1 className="mb-16 font-display font-bold text-ink text-[clamp(28px,4.5vw,44px)] leading-tight tracking-[-0.02em]">
           {post.title}
