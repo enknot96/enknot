@@ -22,7 +22,7 @@ export default function ResumeSkillsPage() {
 
       <div className="flex flex-col gap-10">
         <section>
-          <h2 className="mb-4 text-sm uppercase opacity-60">skills</h2>
+          <h2 className="mb-4 text-sm uppercase opacity-60">{"<3 stack"}</h2>
           <div className="flex flex-wrap gap-2">
             {skills.map((skill) => (
               <span

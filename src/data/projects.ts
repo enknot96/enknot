@@ -139,7 +139,7 @@ export const projects: Project[] = [
     name: "不動産物件検索AIエージェント",
     category: "personal",
     description: "検索から内見予約まで多段ツール連鎖で自律実行",
-    tags: ["AI AGENT"],
+    tags: ["AI AGENT × Human-in-the-loop"],
     longDescription:
       "Vercel AI SDK + Gemini を使い、物件検索・詳細確認・内見予約を複数ツールの連鎖で自律実行するAIエージェント。HMAC署名によるAPI保護とLangfuseによるLLM可観測性を実装しました。",
     techStack: ["Next.js", "TypeScript", "Vercel AI SDK", "Gemini", "HMAC", "Langfuse"],
@@ -174,7 +174,7 @@ export const projects: Project[] = [
     name: "応募者AIランキング",
     category: "personal",
     description: "ベクトル×全文検索のRRF融合で採用マッチング",
-    tags: ["AI"],
+    tags: ["AI × Vector Search"],
     longDescription:
       "TiDBのベクトル検索と全文検索をRRF（Reciprocal Rank Fusion）で融合し、Geminiによるエンベディングで応募者を職務要件にスコアリングする採用支援アプリです。",
     techStack: ["Next.js", "TypeScript", "TiDB Vector", "Gemini", "RRF"],
@@ -193,7 +193,7 @@ export const projects: Project[] = [
     name: "オンライン書店ECサイト",
     category: "personal",
     description: "Stripe決済と在庫管理を備えたフルスタックEC",
-    tags: ["EC"],
+    tags: ["EC × Stripe"],
     longDescription:
       "Laravel + Inertia.js + React で構築したフルスタックECサイト。Stripe Checkoutによる決済フローとWebhookによる注文確定、Cloudflare R2への画像アップロード、商品CRUD・在庫管理機能を実装しました。",
     techStack: ["React", "Laravel", "TypeScript", "Inertia.js", "Stripe", "Cloudflare R2"],
