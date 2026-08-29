@@ -23,6 +23,8 @@ export function Header() {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
   const [now, setNow] = useState<Date | null>(null);
+  const isProjectDetail = pathname.startsWith("/projects/");
+  const isProjectsList = pathname === "/projects";
 
   useEffect(() => {
     let id: ReturnType<typeof setInterval> | null = null;
@@ -57,12 +59,22 @@ export function Header() {
 
   return (
     <header className="flex h-12 items-center gap-2 border-ui px-3 font-mono text-sm md:text-base">
-      <div className="shrink-0 opacity-70">{pathname === "/" ? "/home" : pathname}</div>
+      <div className="min-w-0 shrink truncate opacity-70">{pathname === "/" ? "/home" : pathname}</div>
       <div className="flex min-w-0 flex-1 items-center justify-center gap-2 md:gap-4">
         {now && (
           <>
             <span className="shrink-0 opacity-70">{formatTime(now)}</span>
-            <span className="shrink-0 opacity-70">{formatDate(now)}</span>
+            <span
+              className={`shrink-0 opacity-70 ${
+                isProjectDetail
+                  ? "max-[495px]:hidden"
+                  : isProjectsList
+                    ? "max-[400px]:hidden"
+                    : ""
+              }`}
+            >
+              {formatDate(now)}
+            </span>
           </>
         )}
       </div>

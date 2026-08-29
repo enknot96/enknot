@@ -24,15 +24,13 @@ function formatLastLogin(date: Date) {
   const month = date.toLocaleDateString("en-US", { month: "short" });
   const day = date.getDate();
   const time = date.toLocaleTimeString("en-US", { hour12: false });
-  return `Last login: ${weekday} ${month} ${day} ${time} on ttys000`;
+  return `Last login: ${weekday} ${month} ${day} ${time} on ts0116`;
 }
 
 const MAX_LINE_LENGTH = Math.max(
   formatLastLogin(new Date()).length,
   ...BOOT_SEQUENCE.map((entry) =>
-    entry.type === "command"
-      ? PROMPT.length + 1 + entry.text.length
-      : entry.text.length,
+    entry.type === "command" ? PROMPT.length + 1 + entry.text.length : entry.text.length,
   ),
 );
 
@@ -66,18 +64,16 @@ export function BootSequence({ children }: { children: React.ReactNode }) {
     <>
       {phase !== "done" && (
         <div
-          className={`fixed inset-0 z-50 flex items-center justify-center bg-(--color-backdrop) p-6 transition-opacity ease-out ${
+          className={`fixed inset-0 z-50 flex items-center justify-center bg-(--color-backdrop) p-6 max-[490px]:p-4 transition-opacity ease-out ${
             phase === "revealing" ? "pointer-events-none opacity-0" : "opacity-100"
           }`}
           style={{ transitionDuration: `${REVEAL_DURATION_MS}ms` }}
         >
           <div
-            className="flex flex-col gap-1 text-left font-mono text-lg text-background"
-            style={{ width: `${MAX_LINE_LENGTH + 1}ch` }}
+            className="flex flex-col gap-1 text-left font-mono text-lg text-background max-[490px]:text-[13px]"
+            style={{ width: `min(${MAX_LINE_LENGTH + 1}ch, 100%)` }}
           >
-            {lastLogin && (
-              <p className="boot-line whitespace-nowrap opacity-50">{lastLogin}</p>
-            )}
+            {lastLogin && <p className="boot-line whitespace-nowrap opacity-50">{lastLogin}</p>}
             {lines.map((line, i) => (
               <p
                 key={i}

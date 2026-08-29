@@ -31,8 +31,8 @@ export function NotFoundTerminal() {
   }, [idle, prefersReducedMotion]);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-(--color-backdrop) p-6">
-      <div className="flex w-full max-w-xl flex-col gap-1 text-left font-mono text-base text-background md:text-lg">
+    <div className="fixed inset-0 flex items-center justify-center bg-(--color-backdrop) p-6 max-[490px]:p-4">
+      <div className="flex w-full max-w-xl flex-col gap-1 text-left font-mono text-lg text-background max-[490px]:text-[13px]">
         {lines.map((line, i) => (
           <p
             key={i}

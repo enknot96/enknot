@@ -3,13 +3,13 @@ import { site } from "@/data/site";
 
 export function MobileFooter() {
   return (
-    <footer className="flex items-center justify-between gap-2 border-t border-ui px-4 py-3 font-mono md:hidden">
+    <footer className="flex items-center justify-between gap-2 border-t border-ui px-4 py-2 font-mono md:hidden">
       <div className="flex items-center gap-2">
         <Image
           src="/enknot-logo.png"
           alt={site.brand}
-          width={32}
-          height={32}
+          width={28}
+          height={28}
           className="shrink-0 rounded-full object-cover"
         />
         <div className="flex flex-col leading-tight">

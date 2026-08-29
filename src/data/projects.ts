@@ -50,25 +50,7 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "cebu-it",
-    name: "ACT HOUSE コーポレートサイト",
-    category: "client",
-    description: "卒業生実績ギャラリーとCMS管理画面を備えたWordPressサイト",
-    tags: ["コーポレートサイト"],
-    longDescription:
-      "フィリピン・セブ島でIT・ビジネス・英語を統合した180日間の留学プログラムを提供する企業のコーポレートサイトを、デザイン・実装ともに担当してリニューアル。卒業生の転職・起業実績ギャラリーやカリキュラム紹介、コラム記事一覧などをWordPressで構築しました。",
-    techStack: ["WordPress", "PHP"],
-    story:
-      "フィリピン・セブ島でIT留学プログラムを提供する企業様から、コーポレートサイトのリニューアルを受託。卒業生の実績や留学プログラムの魅力を、デザイン・実装の両面から伝えることを目指しました。",
-    highlights: [
-      "LINE連携の問い合わせ導線",
-      "カリキュラム紹介ページ",
-      "スタッフが記事を投稿・更新できるCMS管理画面",
-    ],
-    liveUrl: "https://acthouse.net/",
-  },
-  {
-    slug: "chienokinomi-books",
+    slug: "books",
     name: "ちえの木の実 コーポレートサイト",
     category: "client",
     description: "約12,000冊の本棚と選書サービスを紹介するWordPressサイト",
@@ -83,25 +65,43 @@ export const projects: Project[] = [
     relatedProject: { slug: "bookstore", label: "オンライン書店ECサイトを見る" },
   },
   {
-    slug: "umigame-counseling",
+    slug: "cebu",
+    name: "ACT HOUSE コーポレートサイト",
+    category: "client",
+    description: "卒業生実績ギャラリーとCMS管理画面を備えたWordPressサイト",
+    tags: ["コーポレートサイト"],
+    longDescription:
+      "フィリピン・セブ島でIT・ビジネス・英語を統合した180日間の留学プログラムを提供する企業のコーポレートサイトを、デザイン・実装ともに担当してリニューアル。卒業生の転職・起業実績ギャラリーやカリキュラム紹介、コラム記事一覧などをWordPressで構築しました。",
+    techStack: ["WordPress", "PHP"],
+    story:
+      "フィリピン・セブ島でIT留学プログラムを提供する企業様から、コーポレートサイトのリニューアルを受託。卒業生の実績や留学プログラムの魅力を、デザイン・実装の両面から伝えることを目指しました。",
+    highlights: [
+      "スタッフが記事を投稿・更新できるCMS管理画面",
+      "LINE連携の問い合わせ導線",
+      "カリキュラム紹介ページ",
+    ],
+    liveUrl: "https://acthouse.net/",
+  },
+  {
+    slug: "umigame",
     name: "Umigame Counseling サービスサイト",
     category: "client",
     description: "水面のリップル表現とオンライン予約導線を設計",
     tags: ["サービスサイト"],
     longDescription:
-      "セブ島在住の公認心理師によるオンライン/対面カウンセリングサービスのサイト。仕事のストレスや子育て、キャリアの悩みに向き合うカウンセリングを、安心感のあるビジュアルと予約導線で伝えられるよう設計しました。",
+      "セブ島在住の公認心理師によるオンラインカウンセリングサービスのサイト。仕事のストレスや子育て、キャリアの悩みに向き合うカウンセリングを、安心感のあるビジュアルと予約導線で伝えられるよう設計しました。",
     techStack: ["Astro", "GSAP", "Three.js", "TimeRex"],
     story:
       "デザイン・実装・営業提案まで一人で担当。心理カウンセリングという伝わりにくいテーマを、水面のような柔らかいビジュアル表現で補う設計にしました。",
     highlights: [
+      "GSAP・Three.jsによる水面のリップル表現",
       "TimeRex埋め込みによるオンライン予約機能",
       "noteと連携したブログ発信導線",
-      "GSAP・Three.jsによる水面のリップル表現",
     ],
     liveUrl: "https://yukahaya.sunnyday.jp/",
   },
   {
-    slug: "ava-utsunomiya",
+    slug: "ava",
     name: "ANJO VERIFY ANTI-AGING LP",
     category: "client",
     description: "施工実績とお客様の声で訴求する一気通貫のLP構成",
@@ -118,7 +118,7 @@ export const projects: Project[] = [
     liveUrl: "https://ava-utsunomiya.com/",
   },
   {
-    slug: "marunage",
+    slug: "ec-lp",
     name: "まるなげ EC販売支援LP",
     category: "client",
     description: "課題喚起から料金プランまで一気通貫で伝えるLP",
@@ -135,7 +135,7 @@ export const projects: Project[] = [
     liveUrl: "https://www.marunage-rp.jp/",
   },
   {
-    slug: "realestate-aiagent",
+    slug: "re-aiagent",
     name: "不動産物件検索AIエージェント",
     category: "personal",
     description: "検索から内見予約まで多段ツール連鎖で自律実行",
@@ -220,7 +220,7 @@ export const projects: Project[] = [
     },
     hostingNote: "初回アクセス時、Render無料プランの仕様上サーバー起動に数十秒かかる場合があります",
     relatedProject: {
-      slug: "chienokinomi-books",
+      slug: "books",
       label: "ちえの木の実のコーポレートサイトを見る",
     },
   },
