@@ -4,7 +4,7 @@ import { site } from "@/data/site";
 
 export default function HomePage() {
   return (
-    <div className="relative flex h-full flex-col justify-start gap-8 p-4 font-mono md:p-8">
+    <div className="relative flex min-h-full flex-col justify-start gap-8 p-4 font-mono md:p-8">
       <p className="text-sm opacity-60">whoami</p>
       <h1 className="font-anton text-4xl md:text-6xl max-[484px]:leading-[1.2]">
         <span>{site.brand}</span>
