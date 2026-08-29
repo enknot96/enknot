@@ -45,6 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="ja"
       data-theme="dark"
+      suppressHydrationWarning
       className={`${sourceCodePro.variable} ${zenKakuGothicNew.variable} ${anton.variable}`}
     >
       <head>

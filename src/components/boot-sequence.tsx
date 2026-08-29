@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { site } from "@/data/site";
+import { useTerminalTypewriter, type TerminalEntry } from "@/lib/use-terminal-typewriter";
 
 const PROMPT = `${site.name.toLowerCase()}@${site.brand.toLowerCase()} ~ %`;
 
-type Entry = { type: "command"; text: string } | { type: "output"; text: string };
-
-const BOOT_SEQUENCE: Entry[] = [
+const BOOT_SEQUENCE: TerminalEntry[] = [
   { type: "command", text: `ssh ${site.brand.toLowerCase()}.dev` },
   { type: "output", text: `connecting to ${site.brand.toLowerCase()}.dev... ok` },
   { type: "output", text: "authenticating... ok" },
@@ -17,23 +16,8 @@ const BOOT_SEQUENCE: Entry[] = [
   { type: "output", text: `${site.brand}｜${site.tagline}` },
 ];
 
-const TYPE_CHAR_MS = 55;
-const OUTPUT_LINE_MS = 380;
-const AFTER_COMMAND_PAUSE_MS = 250;
-const BEFORE_TYPING_MS = 300;
 const HOLD_AFTER_MS = 1800;
 const REVEAL_DURATION_MS = 600;
-
-const LAST_LOGIN_SAMPLE_LENGTH = "Last login: Wed Aug 29 15:51:17 on ttys000".length;
-
-const MAX_LINE_LENGTH = Math.max(
-  LAST_LOGIN_SAMPLE_LENGTH,
-  ...BOOT_SEQUENCE.map((entry) =>
-    entry.type === "command"
-      ? PROMPT.length + 1 + entry.text.length
-      : entry.text.length,
-  ),
-);
 
 function formatLastLogin(date: Date) {
   const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
@@ -43,61 +27,34 @@ function formatLastLogin(date: Date) {
   return `Last login: ${weekday} ${month} ${day} ${time} on ttys000`;
 }
 
+const MAX_LINE_LENGTH = Math.max(
+  formatLastLogin(new Date()).length,
+  ...BOOT_SEQUENCE.map((entry) =>
+    entry.type === "command"
+      ? PROMPT.length + 1 + entry.text.length
+      : entry.text.length,
+  ),
+);
+
 type Phase = "typing" | "revealing" | "done";
 
 export function BootSequence({ children }: { children: React.ReactNode }) {
   const [phase, setPhase] = useState<Phase>("typing");
   const [lastLogin, setLastLogin] = useState<string | null>(null);
-  const [lines, setLines] = useState<Entry[]>([]);
-  const [typingText, setTypingText] = useState<string | null>(null);
-  const [typedChars, setTypedChars] = useState(0);
-  const [idle, setIdle] = useState(false);
+
+  const { lines, typingText, typedChars, idle, prefersReducedMotion } = useTerminalTypewriter(
+    BOOT_SEQUENCE,
+    { onBeforeStart: () => setLastLogin(formatLastLogin(new Date())) },
+  );
 
   useEffect(() => {
-    let cancelled = false;
-    const timeouts: ReturnType<typeof setTimeout>[] = [];
-    const wait = (ms: number) =>
-      new Promise<void>((resolve) => {
-        timeouts.push(setTimeout(resolve, ms));
-      });
-
-    async function run() {
-      setLastLogin(formatLastLogin(new Date()));
-      await wait(BEFORE_TYPING_MS);
-      if (cancelled) return;
-      for (const entry of BOOT_SEQUENCE) {
-        if (cancelled) return;
-        if (entry.type === "command") {
-          setTypingText(entry.text);
-          for (let c = 1; c <= entry.text.length; c++) {
-            if (cancelled) return;
-            setTypedChars(c);
-            await wait(TYPE_CHAR_MS);
-          }
-          await wait(AFTER_COMMAND_PAUSE_MS);
-          if (cancelled) return;
-          setLines((prev) => [...prev, entry]);
-          setTypingText(null);
-          setTypedChars(0);
-        } else {
-          await wait(OUTPUT_LINE_MS);
-          if (cancelled) return;
-          setLines((prev) => [...prev, entry]);
-        }
-      }
-      if (cancelled) return;
-      setIdle(true);
-      await wait(HOLD_AFTER_MS);
-      if (cancelled) return;
-      setPhase("revealing");
-    }
-
-    run();
-    return () => {
-      cancelled = true;
-      timeouts.forEach(clearTimeout);
-    };
-  }, []);
+    if (!idle) return;
+    const timeout = setTimeout(
+      () => setPhase("revealing"),
+      prefersReducedMotion ? 0 : HOLD_AFTER_MS,
+    );
+    return () => clearTimeout(timeout);
+  }, [idle, prefersReducedMotion]);
 
   useEffect(() => {
     if (phase !== "revealing") return;

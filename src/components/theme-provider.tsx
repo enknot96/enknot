@@ -19,6 +19,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY) as Theme | null;
     const preferred = stored ?? "dark";
+    // SSR時はlocalStorageにアクセスできないため、クライアント確定後にstateへ反映する意図的な設計
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(preferred);
     document.documentElement.dataset.theme = preferred;
   }, []);

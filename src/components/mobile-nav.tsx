@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "@/data/nav";
+import { isNavActive } from "@/lib/nav";
 
 export function MobileNav() {
   const pathname = usePathname();
@@ -10,7 +11,7 @@ export function MobileNav() {
   return (
     <nav className="flex md:hidden border-ui font-mono text-sm">
       {NAV_ITEMS.map((item) => {
-        const active = pathname === item.href;
+        const active = isNavActive(pathname, item.href);
         return (
           <Link
             key={item.href}

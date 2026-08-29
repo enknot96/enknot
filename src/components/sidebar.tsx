@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site } from "@/data/site";
 import { NAV_ITEMS } from "@/data/nav";
+import { isNavActive } from "@/lib/nav";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -25,7 +26,7 @@ export function Sidebar() {
         <div className="text-sm opacity-50 mb-6 text-center">{site.tagline}</div>
         <nav className="flex flex-col gap-1">
           {NAV_ITEMS.map((item) => {
-            const active = pathname === item.href;
+            const active = isNavActive(pathname, item.href);
             return (
               <Link
                 key={item.href}

@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { site } from "@/data/site";
+import { useTerminalTypewriter, type TerminalEntry } from "@/lib/use-terminal-typewriter";
 
 const PROMPT = `${site.name.toLowerCase()}@${site.brand.toLowerCase()} ~ %`;
 
-type Entry = { type: "command"; text: string } | { type: "output"; text: string };
-
-const SEQUENCE: Entry[] = [
+const SEQUENCE: TerminalEntry[] = [
   { type: "command", text: "cat ./requested-page" },
   { type: "output", text: "cat: ./requested-page: No such file or directory" },
   { type: "output", text: "" },
@@ -15,63 +14,21 @@ const SEQUENCE: Entry[] = [
   { type: "output", text: "お探しのページは見つかりませんでした。" },
 ];
 
-const TYPE_CHAR_MS = 55;
-const OUTPUT_LINE_MS = 380;
-const AFTER_COMMAND_PAUSE_MS = 250;
-const BEFORE_TYPING_MS = 300;
 const AFTER_SEQUENCE_MS = 400;
 
 export function NotFoundTerminal() {
-  const [lines, setLines] = useState<Entry[]>([]);
-  const [typingText, setTypingText] = useState<string | null>(null);
-  const [typedChars, setTypedChars] = useState(0);
-  const [idle, setIdle] = useState(false);
   const [showLink, setShowLink] = useState(false);
+  const { lines, typingText, typedChars, idle, prefersReducedMotion } =
+    useTerminalTypewriter(SEQUENCE);
 
   useEffect(() => {
-    let cancelled = false;
-    const timeouts: ReturnType<typeof setTimeout>[] = [];
-    const wait = (ms: number) =>
-      new Promise<void>((resolve) => {
-        timeouts.push(setTimeout(resolve, ms));
-      });
-
-    async function run() {
-      await wait(BEFORE_TYPING_MS);
-      if (cancelled) return;
-      for (const entry of SEQUENCE) {
-        if (cancelled) return;
-        if (entry.type === "command") {
-          setTypingText(entry.text);
-          for (let c = 1; c <= entry.text.length; c++) {
-            if (cancelled) return;
-            setTypedChars(c);
-            await wait(TYPE_CHAR_MS);
-          }
-          await wait(AFTER_COMMAND_PAUSE_MS);
-          if (cancelled) return;
-          setLines((prev) => [...prev, entry]);
-          setTypingText(null);
-          setTypedChars(0);
-        } else {
-          await wait(OUTPUT_LINE_MS);
-          if (cancelled) return;
-          setLines((prev) => [...prev, entry]);
-        }
-      }
-      if (cancelled) return;
-      setIdle(true);
-      await wait(AFTER_SEQUENCE_MS);
-      if (cancelled) return;
-      setShowLink(true);
-    }
-
-    run();
-    return () => {
-      cancelled = true;
-      timeouts.forEach(clearTimeout);
-    };
-  }, []);
+    if (!idle) return;
+    const timeout = setTimeout(
+      () => setShowLink(true),
+      prefersReducedMotion ? 0 : AFTER_SEQUENCE_MS,
+    );
+    return () => clearTimeout(timeout);
+  }, [idle, prefersReducedMotion]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-(--color-backdrop) p-6">
@@ -104,6 +61,7 @@ export function NotFoundTerminal() {
         )}
         {showLink && (
           <p className="boot-line mt-2">
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- root layout外(global-not-found)からの遷移でnext/link のクライアントナビゲーションが機能しないため、意図的にフルページ遷移させている */}
             <a
               href="/"
               className="opacity-70 underline-offset-4 transition duration-200 ease-out hover:opacity-100 hover:text-(--color-accent) hover:underline"

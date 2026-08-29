@@ -2,25 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { site } from "@/data/site";
 import { useTheme } from "@/components/theme-provider";
-import {
-  GithubIcon,
-  XIcon,
-  NoteIcon,
-  ZennIcon,
-  DevIcon,
-  SunIcon,
-  MoonIcon,
-} from "@/components/icons";
-
-const SOCIAL_ICONS = {
-  github: GithubIcon,
-  x: XIcon,
-  note: NoteIcon,
-  zenn: ZennIcon,
-  dev: DevIcon,
-} as const;
+import { SunIcon, MoonIcon } from "@/components/icons";
+import { SocialLinks } from "@/components/social-links";
 
 function formatTime(date: Date) {
   return date.toLocaleTimeString("en-US", { hour12: false });
@@ -41,9 +25,34 @@ export function Header() {
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
-    setNow(new Date());
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
+    let id: ReturnType<typeof setInterval> | null = null;
+
+    function start() {
+      setNow(new Date());
+      id = setInterval(() => setNow(new Date()), 1000);
+    }
+
+    function stop() {
+      if (id !== null) {
+        clearInterval(id);
+        id = null;
+      }
+    }
+
+    function handleVisibilityChange() {
+      if (document.hidden) {
+        stop();
+      } else {
+        start();
+      }
+    }
+
+    if (!document.hidden) start();
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   return (
@@ -67,21 +76,7 @@ export function Header() {
           {theme === "light" ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
         </button>
         <div className="flex items-center gap-3 max-[560px]:hidden">
-          {site.social.map((link) => {
-            const Icon = SOCIAL_ICONS[link.icon];
-            return (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={link.label}
-                className="opacity-70 transition duration-200 ease-out hover:opacity-100 hover:text-(--color-accent)"
-              >
-                <Icon className="h-5 w-5" />
-              </a>
-            );
-          })}
+          <SocialLinks />
         </div>
       </div>
     </header>
