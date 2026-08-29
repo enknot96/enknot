@@ -20,13 +20,6 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Infrastructure
-
-- Next.js 16 (App Router) を Docker コンテナ化し、AWS EC2 (t3.micro) 上で Nginx リバースプロキシ経由で稼働
-- GitHub Actions による CI/CD：`main` ブランチへの push で自動デプロイ
-- デプロイ・保守アクセスともに SSH ポートを外部公開せず、AWS Systems Manager（Session Manager / Run Command）経由でアクセス。GitHub Actions は OIDC で AWS に認証し、長期のアクセスキーを保持しない構成
-- HTTPS 配信は Let's Encrypt（Certbot）証明書を使用
-
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

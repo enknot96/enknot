@@ -1,42 +1,73 @@
 import type { Metadata } from "next";
+import { Anton, Source_Code_Pro, Zen_Kaku_Gothic_New } from "next/font/google";
 import "./globals.css";
-import Footer from "@/components/Footer";
-import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Sidebar } from "@/components/sidebar";
+import { Header } from "@/components/header";
+import { MobileNav } from "@/components/mobile-nav";
+import { MobileFooter } from "@/components/mobile-footer";
+import { MobileSocialBar } from "@/components/mobile-social-bar";
+import { TerminalFrame } from "@/components/terminal-frame";
+import { BootSequence } from "@/components/boot-sequence";
+
+const sourceCodePro = Source_Code_Pro({
+  variable: "--font-source-code-pro",
+  subsets: ["latin"],
+});
+
+const zenKakuGothicNew = Zen_Kaku_Gothic_New({
+  variable: "--font-zen-kaku-gothic-new",
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+});
+
+const anton = Anton({
+  variable: "--font-anton",
+  weight: "400",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://enknot.dev"),
-  title: "ENKNOT｜AI × Web Developer",
-  description: "Portfolio — AI & Engineering",
-  openGraph: {
-    title: "ENKNOT｜AI × Web Developer",
-    description: "Portfolio — AI & Engineering",
-    siteName: "ENKNOT",
-    type: "website",
-    locale: "ja_JP",
-  },
+  title: "ENKNOT | AI × Web Developer",
+  description: "AI × Web Developer Shuto のポートフォリオ",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const THEME_INIT_SCRIPT = `
+try {
+  var stored = localStorage.getItem("enknot-theme");
+  document.documentElement.dataset.theme = stored || "dark";
+} catch (e) {}
+`;
+
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="ja"
-      className="h-full antialiased"
+      data-theme="dark"
+      suppressHydrationWarning
+      className={`${sourceCodePro.variable} ${zenKakuGothicNew.variable} ${anton.variable}`}
     >
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Geologica:wght@700;800&family=Roboto+Mono:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
-      <body className="min-h-full bg-paper">
-        <SmoothScrollProvider>
-          {children}
-          <Footer />
-        </SmoothScrollProvider>
+      <body className="h-dvh overflow-hidden antialiased">
+        <ThemeProvider>
+          <BootSequence>
+            <TerminalFrame>
+              <Sidebar />
+              <div className="flex-1 flex flex-col min-w-0 gap-2">
+                <Header />
+                <MobileNav />
+                <main className="relative flex-1 min-h-0 border-ui overflow-y-auto">
+                  {children}
+                </main>
+                <MobileSocialBar />
+                <MobileFooter />
+              </div>
+            </TerminalFrame>
+          </BootSequence>
+        </ThemeProvider>
       </body>
     </html>
   );
