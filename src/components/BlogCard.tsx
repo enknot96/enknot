@@ -39,14 +39,14 @@ export default function BlogCard({ post, index }: Props) {
           whileHover={{ borderColor: "#cccccc" }}
           transition={{ duration: 0.2 }}
         >
-          <div className="w-full aspect-video flex items-center justify-center bg-shade shrink-0">
+          <div className="relative w-full aspect-video flex items-center justify-center bg-white shrink-0">
             {post.eyecatch ? (
               <Image
                 src={post.eyecatch.url}
                 alt={post.title}
-                width={post.eyecatch.width}
-                height={post.eyecatch.height}
-                className="w-full h-full object-cover"
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                className="object-contain"
               />
             ) : (
               <span className="font-display text-hint text-xs tracking-widest uppercase">

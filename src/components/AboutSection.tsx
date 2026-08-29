@@ -48,7 +48,7 @@ export default function AboutSection() {
               className="mb-8 font-display font-bold text-ink text-[clamp(23px,3.25vw,36px)] leading-[1.15] tracking-[-0.02em]"
               {...reveal(0.1)}
             >
-              屋号：ENKNOT（エンノット）
+              屋号：ENKNOT / エンノット
             </motion.h2>
 
             <motion.p
