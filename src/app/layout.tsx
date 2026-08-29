@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 const THEME_INIT_SCRIPT = `
 try {
   var stored = localStorage.getItem("enknot-theme");
-  document.documentElement.dataset.theme = stored || "dark";
+  document.documentElement.dataset.theme = stored || "light";
 } catch (e) {}
 `;
 
@@ -44,7 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="ja"
-      data-theme="dark"
+      data-theme="light"
       suppressHydrationWarning
       className={`${sourceCodePro.variable} ${zenKakuGothicNew.variable} ${anton.variable}`}
     >

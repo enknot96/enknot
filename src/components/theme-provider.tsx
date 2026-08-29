@@ -14,11 +14,11 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 const STORAGE_KEY = "enknot-theme";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY) as Theme | null;
-    const preferred = stored ?? "dark";
+    const preferred = stored ?? "light";
     // SSR時はlocalStorageにアクセスできないため、クライアント確定後にstateへ反映する意図的な設計
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(preferred);
