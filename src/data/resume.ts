@@ -17,7 +17,7 @@ export const timeline = [
   {
     period: "2024.10 – 2025.03",
     title: "Wellington, New Zealand",
-    description: "現地で就労",
+    description: "飲食チェーン勤務、多国籍な交流を経験",
   },
   {
     period: "2025.04 – 2025.09",
@@ -32,7 +32,7 @@ export const timeline = [
   {
     period: "2026.01 – Present",
     title: "Web Engineer, Full-time",
-    description: "Web開発会社に正社員として入社",
+    description: "日中はWeb開発会社に正社員として勤務",
   },
 ] as const;
 
@@ -41,9 +41,13 @@ export const skills = [
   "React",
   "Next.js",
   "Astro",
+  "GSAP",
+  "Three.js",
   "Node.js",
   "Laravel",
+  "Postgres",
   "AWS",
+  "Vercel",
 ] as const;
 
 export const qualifications = ["宅地建物取引士", "FP2級", "TOEIC860"] as const;
