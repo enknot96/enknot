@@ -1,6 +1,9 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/data/projects";
 
+// 静的エクスポート（output: "export"）では、ビルド時に生成することを明示する必要がある
+export const dynamic = "force-static";
+
 const BASE_URL = "https://enknot.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {

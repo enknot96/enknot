@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { projects } from "@/data/projects";
 import { GithubIcon, ArrowRightIcon, ArrowUpRightIcon } from "@/components/icons";
 
@@ -12,6 +12,9 @@ const arrowClass = "h-3 w-3 transition-transform duration-200 ease-out group-hov
 const externalArrowClass =
   "h-3 w-3 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5";
 
+// generateStaticParams が返す slug 以外は生成・受付しない（静的エクスポートの要件）
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
@@ -21,7 +24,7 @@ export default async function ProjectDetailPage({ params }: PageProps<"/projects
   const project = projects.find((p) => p.slug === slug);
 
   if (!project) {
-    redirect("/projects");
+    notFound();
   }
 
   return (

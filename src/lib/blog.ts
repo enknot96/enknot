@@ -18,27 +18,28 @@ function formatDate(value: string): string {
   });
 }
 
+// 取得はビルド時に一度だけ実行される（GitHub Actions の日次ビルドで更新）。
+// 失敗を握りつぶすとサイトが空の状態で公開されてしまうため、例外はそのまま送出して
+// ビルドを失敗させ、前回デプロイの内容を維持する。
+// 正常に応答したが記事が 0 件の場合はエラーではないので、空配列を返す。
 async function fetchRssPosts(url: string, limit: number): Promise<BlogPost[]> {
-  try {
-    const res = await fetch(url, {
-      headers: { "User-Agent": "Mozilla/5.0" },
-      next: { revalidate: 1800 },
-    });
-    if (!res.ok) return [];
-
-    const xml = await res.text();
-    const data = parser.parse(xml);
-    const rawItems = data?.rss?.channel?.item;
-    const items = Array.isArray(rawItems) ? rawItems : rawItems ? [rawItems] : [];
-
-    return items.slice(0, limit).map((item) => ({
-      title: String(item.title ?? ""),
-      link: String(item.link ?? ""),
-      date: formatDate(String(item.pubDate ?? "")),
-    }));
-  } catch {
-    return [];
+  const res = await fetch(url, {
+    headers: { "User-Agent": "Mozilla/5.0" },
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch RSS feed: ${url} (${res.status} ${res.statusText})`);
   }
+
+  const xml = await res.text();
+  const data = parser.parse(xml);
+  const rawItems = data?.rss?.channel?.item;
+  const items = Array.isArray(rawItems) ? rawItems : rawItems ? [rawItems] : [];
+
+  return items.slice(0, limit).map((item) => ({
+    title: String(item.title ?? ""),
+    link: String(item.link ?? ""),
+    date: formatDate(String(item.pubDate ?? "")),
+  }));
 }
 
 export async function fetchNotePosts(username: string, limit: number): Promise<BlogPost[]> {
@@ -50,24 +51,21 @@ export async function fetchZennPosts(username: string, limit: number): Promise<B
 }
 
 export async function fetchDevToPosts(username: string, limit: number): Promise<BlogPost[]> {
-  try {
-    const res = await fetch(`https://dev.to/api/articles?username=${username}`, {
-      next: { revalidate: 1800 },
-    });
-    if (!res.ok) return [];
-
-    const articles = (await res.json()) as Array<{
-      title: string;
-      url: string;
-      published_at: string;
-    }>;
-
-    return articles.slice(0, limit).map((article) => ({
-      title: article.title,
-      link: article.url,
-      date: formatDate(article.published_at),
-    }));
-  } catch {
-    return [];
+  const url = `https://dev.to/api/articles?username=${username}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch dev.to articles: ${url} (${res.status} ${res.statusText})`);
   }
+
+  const articles = (await res.json()) as Array<{
+    title: string;
+    url: string;
+    published_at: string;
+  }>;
+
+  return articles.slice(0, limit).map((article) => ({
+    title: article.title,
+    link: article.url,
+    date: formatDate(article.published_at),
+  }));
 }

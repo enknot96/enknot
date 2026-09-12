@@ -1,0 +1,21 @@
+{
+  "name": "enknot",
+  "compatibility_date": "2026-09-12",
+
+  // Worker スクリプト（main）は持たない静的サイト構成。
+  // 静的アセットへのリクエストは課金・無料枠の消費対象外になる。
+  "assets": {
+    "directory": "./out/",
+
+    // 個別ファイル（about.html）は末尾スラッシュなし、
+    // フォルダの index.html は末尾スラッシュありで配信する。
+    // これにより /about が about.html を 200 で返し、現行URLと互換になる。
+    "html_handling": "auto-trailing-slash",
+
+    // 未マッチのURLは最も近い 404.html を 404 ステータスで返す。
+    "not_found_handling": "404-page"
+  },
+
+  // 本番ドメイン切替前の検証を enknot.<account>.workers.dev で行うために有効化する。
+  "workers_dev": true
+}
