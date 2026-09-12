@@ -1,81 +1,52 @@
-name: Deploy to EC2
+name: Deploy to Cloudflare
 
 on:
   push:
     branches:
       - main
+  schedule:
+    # UTC 21:17 = JST 6:17。外部ブログ(note/Zenn/dev.to)の記事一覧はビルド時に取り込まれるため、
+    # 日次でビルドし直すことで /blog を更新する。
+    # 毎時0分付近はGitHub Actionsが混雑して遅延しやすいので、意図的にずらしている。
+    - cron: "17 21 * * *"
+  workflow_dispatch:
 
 permissions:
-  id-token: write
   contents: read
+
+# push と日次cronが同時に走ってデプロイが競合しないようにする。
+concurrency:
+  group: deploy-cloudflare
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          node-version: 22
+          cache: npm
 
-      - name: Deploy via SSM
-        run: |
-          COMMAND_ID=$(aws ssm send-command \
-            --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
-            --document-name "AWS-RunShellScript" \
-            --parameters commands='[
-              "set -e",
-              "git config --system --add safe.directory /home/ec2-user/enknot",
-              "cd /home/ec2-user/enknot",
-              "git fetch origin main",
-              "git reset --hard origin/main",
-              "echo \"MICROCMS_SERVICE_DOMAIN=${{ secrets.MICROCMS_SERVICE_DOMAIN }}\" > .env",
-              "echo \"MICROCMS_API_KEY=${{ secrets.MICROCMS_API_KEY }}\" >> .env",
-              "chmod 600 .env",
-              "docker build -t enknot .",
-              "docker stop enknot || true",
-              "docker rm enknot || true",
-              "docker run -d -p 3000:3000 --name enknot --restart always --env-file /home/ec2-user/enknot/.env enknot"
-            ]' \
-            --query "Command.CommandId" \
-            --output text)
+      - name: Install dependencies
+        run: npm ci
 
-          echo "Command ID: $COMMAND_ID"
+      # ブログ一覧は fetch の結果がビルド時にHTMLへ焼き込まれる。
+      # 取得に失敗した場合は src/lib/blog.ts が例外を投げてこのステップが失敗し、
+      # デプロイされないため、公開中のサイトは前回の内容のまま維持される。
+      #
+      # 【重要】.next/cache を actions/cache 等で復元してはいけない。
+      # Next.js はビルド時 fetch の結果を .next/cache/fetch-cache に保存するため、
+      # これを復元すると古い記事一覧が再利用され、日次ビルドしても /blog が更新されなくなる。
+      - name: Build static site
+        run: npm run build
 
-          STATUS="Pending"
-          for i in $(seq 1 60); do
-            STATUS=$(aws ssm get-command-invocation \
-              --command-id "$COMMAND_ID" \
-              --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
-              --query "Status" --output text 2>/dev/null || echo "Pending")
-            echo "Attempt $i: status=$STATUS"
-            case "$STATUS" in
-              Success|Failed|Cancelled|TimedOut)
-                break
-                ;;
-            esac
-            sleep 15
-          done
-
-          echo "=== stdout ==="
-          aws ssm get-command-invocation \
-            --command-id "$COMMAND_ID" \
-            --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
-            --query "StandardOutputContent" --output text
-
-          echo "=== stderr ==="
-          aws ssm get-command-invocation \
-            --command-id "$COMMAND_ID" \
-            --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
-            --query "StandardErrorContent" --output text
-
-          STATUS=$(aws ssm get-command-invocation \
-            --command-id "$COMMAND_ID" \
-            --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
-            --query "Status" --output text)
-
-          if [ "$STATUS" != "Success" ]; then
-            echo "Deploy failed with status: $STATUS"
-            exit 1
-          fi
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
