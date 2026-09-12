@@ -11,7 +11,6 @@ const BOOT_SEQUENCE: TerminalEntry[] = [
   { type: "output", text: `connecting to ${site.brand.toLowerCase()}.dev... ok` },
   { type: "output", text: "authenticating... ok" },
   { type: "output", text: "loading profile... ok" },
-  { type: "output", text: "mounting contents... ok" },
   { type: "command", text: "whoami" },
   { type: "output", text: `${site.brand}｜${site.tagline}` },
 ];
