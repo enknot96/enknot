@@ -58,9 +58,9 @@ export function Header() {
   }, []);
 
   return (
-    <header className="flex h-12 items-center gap-2 border-ui px-3 font-mono text-sm md:text-base">
-      <div className="min-w-0 shrink truncate opacity-70">{pathname === "/" ? "/home" : pathname}</div>
-      <div className="flex min-w-0 flex-1 items-center justify-center gap-2 md:gap-4">
+    <header className="grid h-12 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 border-ui px-3 font-mono text-sm md:text-base">
+      <div className="min-w-0 truncate opacity-70">{pathname === "/" ? "/home" : pathname}</div>
+      <div className="flex items-center gap-2 md:gap-4">
         {now && (
           <>
             <span className="shrink-0 opacity-70">{formatTime(now)}</span>
@@ -78,7 +78,7 @@ export function Header() {
           </>
         )}
       </div>
-      <div className="flex shrink-0 items-center justify-end gap-4">
+      <div className="flex min-w-0 items-center justify-end gap-4">
         <button
           type="button"
           onClick={toggleTheme}
@@ -87,7 +87,7 @@ export function Header() {
         >
           {theme === "light" ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
         </button>
-        <div className="flex items-center gap-3 max-[560px]:hidden">
+        <div className="flex items-center gap-3 max-[680px]:hidden">
           <SocialLinks />
         </div>
       </div>
