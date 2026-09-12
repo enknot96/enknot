@@ -135,6 +135,47 @@ export const projects: Project[] = [
     liveUrl: "https://www.marunage-rp.jp/",
   },
   {
+    slug: "shotext",
+    name: "ショッテキ！(ShoText!)",
+    category: "personal",
+    description: "ドラッグ選択でローカルOCR、テキストを自動でコピー",
+    tags: ["Chrome拡張 × ローカルOCR"],
+    longDescription:
+      "Webページ上の好きな範囲をドラッグで選択すると、Tesseract.js（WebAssembly）によるOCRをブラウザ内で完結させ、認識したテキストを自動でクリップボードにコピーするChrome拡張機能。画像も認識結果も外部サーバーには一切送信しません。",
+    techStack: ["TypeScript", "Chrome Extension (Manifest V3)", "Tesseract.js", "Vite", "pnpm workspace"],
+    story:
+      "スクリーンショットを撮って画像からテキストを打ち直す手間をなくしたいと思い作成。OCR処理を全てローカル完結にすることで、機密性の高い画面でも安心して使えることにこだわりました。",
+    highlights: [
+      "ドラッグで範囲選択→ローカルOCR→クリップボード自動コピーまでワンアクション",
+      "Tesseract.js（WASM）によるフル・オンデバイス処理、外部送信ゼロ",
+      "pnpm workspaceでcore（共通UI）とlocal-ocr（拡張機能本体）を分離したmonorepo構成",
+    ],
+    githubUrl: "https://github.com/enknot96/shotext",
+    liveUrl:
+      "https://chromewebstore.google.com/detail/%E3%82%B7%E3%83%A7%E3%83%83%E3%83%86%E3%82%AD%EF%BC%81-shotext%EF%BC%81/gpfjbnfccfhfnbafdkadhckfnjdpfcpm",
+    liveUrlLabel: "Chromeウェブストアで見る",
+  },
+  {
+    slug: "kokosoko",
+    name: "ココソコ (Koko Soko)",
+    category: "personal",
+    description: "範囲指定 or ページ全体を、スクロールしながら1枚のPNGに合成",
+    tags: ["Chrome拡張 × スクロールキャプチャ"],
+    longDescription:
+      "Webページ上の好きな範囲、またはページ全体を、スクロールしながら継ぎ目なく1枚のPNGとして保存できるChrome拡張機能。撮影・合成のすべてをブラウザ内で完結させ、外部サーバーへのデータ送信は一切行いません。",
+    techStack: ["TypeScript", "Chrome Extension (Manifest V3)", "Vite", "Canvas API"],
+    story:
+      "画面に収まりきらない長い表やチャットのやり取りを、何枚もスクショを撮ってつなぎ合わせる手間をなくしたいと思い作成。固定ヘッダーの自動退避や最小権限（activeTab + scripting）など、実運用に耐える細部にもこだわりました。",
+    highlights: [
+      "範囲指定 × 自動スクロール撮影で、画面外にはみ出す範囲も1枚のPNGに合成",
+      "固定ヘッダー・サイドバーを撮影中だけ自動的に一時退避し、合成画像への写り込みを防止",
+      "権限はactiveTab + scriptingのみの最小権限設計",
+    ],
+    githubUrl: "https://github.com/enknot96/kokosoko",
+    liveUrl: "https://chromewebstore.google.com/detail/hobllnakplgdhgkjdanilcgplbpanbcm",
+    liveUrlLabel: "Chromeウェブストアで見る",
+  },
+  {
     slug: "re-aiagent",
     name: "不動産物件検索AIエージェント",
     category: "personal",
