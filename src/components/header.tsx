@@ -57,38 +57,59 @@ export function Header() {
     };
   }, []);
 
-  return (
-    <header className="grid h-12 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 border-ui px-3 font-mono text-sm md:text-base">
-      <div className="min-w-0 truncate opacity-70">{pathname === "/" ? "/home" : pathname}</div>
-      <div className="flex items-center gap-2 md:gap-4">
-        {now && (
-          <>
-            <span className="shrink-0 opacity-70">{formatTime(now)}</span>
-            <span
-              className={`shrink-0 opacity-70 ${
-                isProjectDetail
-                  ? "max-[495px]:hidden"
-                  : isProjectsList
-                    ? "max-[400px]:hidden"
-                    : ""
-              }`}
-            >
-              {formatDate(now)}
-            </span>
-          </>
-        )}
+  const renderPath = () => (
+    <div className="min-w-0 truncate opacity-70">{pathname === "/" ? "/home" : pathname}</div>
+  );
+
+  const renderTimeDate = () => (
+    <div className="flex items-center gap-2 md:gap-4">
+      {now && (
+        <>
+          <span className="shrink-0 opacity-70">{formatTime(now)}</span>
+          <span
+            className={`shrink-0 opacity-70 ${
+              isProjectDetail
+                ? "max-[495px]:hidden"
+                : isProjectsList
+                  ? "max-[400px]:hidden"
+                  : ""
+            }`}
+          >
+            {formatDate(now)}
+          </span>
+        </>
+      )}
+    </div>
+  );
+
+  const renderActions = () => (
+    <div className="flex min-w-0 items-center justify-end gap-4">
+      <button
+        type="button"
+        onClick={toggleTheme}
+        aria-label="テーマ切替"
+        className="flex shrink-0 cursor-pointer items-center justify-center border-ui p-2 opacity-70 transition duration-200 ease-out hover:opacity-100 hover:text-(--color-accent)"
+      >
+        {theme === "light" ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
+      </button>
+      <div className="flex items-center gap-3 max-[680px]:hidden">
+        <SocialLinks />
       </div>
-      <div className="flex min-w-0 items-center justify-end gap-4">
-        <button
-          type="button"
-          onClick={toggleTheme}
-          aria-label="テーマ切替"
-          className="flex shrink-0 cursor-pointer items-center justify-center border-ui p-2 opacity-70 transition duration-200 ease-out hover:opacity-100 hover:text-(--color-accent)"
-        >
-          {theme === "light" ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
-        </button>
-        <div className="flex items-center gap-3 max-[680px]:hidden">
-          <SocialLinks />
+    </div>
+  );
+
+  return (
+    <header className="flex h-12 items-center border-ui px-3 font-mono text-sm md:text-base">
+      <div className="hidden w-full min-[681px]:grid min-[681px]:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] min-[681px]:items-center min-[681px]:gap-2">
+        {renderPath()}
+        {renderTimeDate()}
+        {renderActions()}
+      </div>
+      <div className="flex w-full items-center justify-between gap-2 min-[681px]:hidden">
+        {renderPath()}
+        <div className="flex min-w-0 items-center gap-2 md:gap-4">
+          {renderTimeDate()}
+          {renderActions()}
         </div>
       </div>
     </header>
