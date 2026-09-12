@@ -41,12 +41,10 @@ export const skills = [
   "React",
   "Next.js",
   "Astro",
-  "GSAP",
-  "Three.js",
   "Node.js",
   "Laravel",
   "Postgres",
-  "AWS",
+  "Cloudflare",
   "Vercel",
 ] as const;
 
