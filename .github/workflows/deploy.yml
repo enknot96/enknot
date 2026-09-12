@@ -50,3 +50,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # wrangler-action の既定は v3 系。v3 は Worker スクリプトを持たない
+          # 静的アセットのみの構成に対応しておらず Missing entry-point で失敗するため、
+          # ローカル検証で動作を確認した v4 系を明示的に指定する。
+          wranglerVersion: "4.131.1"
