@@ -142,7 +142,13 @@ export const projects: Project[] = [
     tags: ["Chrome拡張 × ローカルOCR"],
     longDescription:
       "Webページ上の好きな範囲をドラッグで選択すると、Tesseract.js（WebAssembly）によるOCRをブラウザ内で完結させ、認識したテキストを自動でクリップボードにコピーするChrome拡張機能。画像も認識結果も外部サーバーには一切送信しません。",
-    techStack: ["TypeScript", "Chrome Extension (Manifest V3)", "Tesseract.js", "Vite", "pnpm workspace"],
+    techStack: [
+      "TypeScript",
+      "Chrome Extension (Manifest V3)",
+      "Tesseract.js",
+      "Vite",
+      "pnpm workspace",
+    ],
     story:
       "スクリーンショットを撮って画像からテキストを打ち直す手間をなくしたいと思い作成。OCR処理を全てローカル完結にすることで、機密性の高い画面でも安心して使えることにこだわりました。",
     highlights: [
@@ -177,7 +183,7 @@ export const projects: Project[] = [
   },
   {
     slug: "re-aiagent",
-    name: "不動産物件検索AIエージェント",
+    name: "みらい不動産 物件案内AIエージェント",
     category: "personal",
     description: "検索から内見予約まで多段ツール連鎖で自律実行",
     tags: ["AI AGENT × Human-in-the-loop"],
@@ -185,7 +191,7 @@ export const projects: Project[] = [
       "Vercel AI SDK + Gemini を使い、物件検索・詳細確認・内見予約を複数ツールの連鎖で自律実行するAIエージェント。HMAC署名によるAPI保護とLangfuseによるLLM可観測性を実装しました。",
     techStack: ["Next.js", "TypeScript", "Vercel AI SDK", "Gemini", "HMAC", "Langfuse"],
     story:
-      "自作の不動産業務管理APIを「道具」として使い、検索して答えるだけでなく、状況を判断して多段で行動するAIエージェントを作りたいと考えました。ハウスメーカー営業6年の経験を、条件緩和の判断ロジックに反映しています。",
+      "架空の不動産会社「みらい不動産」を舞台に、契約前の物件案内を担うエージェントとして設計。自作の不動産業務管理APIを「道具」として使い、検索して答えるだけでなく、状況を判断して多段で行動するAIエージェントを作りたいと考えました。ハウスメーカー営業6年の経験を、条件緩和の判断ロジックに反映しています。",
     highlights: [
       "Human-in-the-loop承認ゲート（HMAC署名で承認内容と実行内容の改ざん・取り違えを防止）",
       "決定的テストと実モデルevalsを分離した品質保証、Langfuseで可観測性を確保",
@@ -193,6 +199,7 @@ export const projects: Project[] = [
     ],
     githubUrl: "https://github.com/enknot96/realestate-aiagent",
     liveUrl: "https://realestate-aiagent.vercel.app/",
+    relatedProject: { slug: "crm-realestate", label: "顧客管理システムを見る" },
     integratedSystem: {
       title: "不動産業務管理API",
       description:
@@ -264,5 +271,39 @@ export const projects: Project[] = [
       slug: "books",
       label: "ちえの木の実のコーポレートサイトを見る",
     },
+  },
+  {
+    slug: "crm-realestate",
+    name: "みらい不動産 顧客管理システム",
+    category: "personal",
+    description: "LINE連携で顧客タグ配信と業務リマインドを自動化",
+    tags: ["LINE連携 × 巡回報告AI"],
+    longDescription:
+      "空き家管理・売買仲介を1人で営む不動産事業者を想定した、LINE連携の顧客管理システム。売主・買主等のタグ別配信、契約日を基準にした業務報告・更新リマインドの自動通知、現場写真からのAI報告書草案生成までを1つの管理画面にまとめました。",
+    techStack: [
+      "Next.js",
+      "TypeScript",
+      "Neon",
+      "Drizzle ORM",
+      "LINE Messaging API",
+      "Cloudflare R2",
+      "Cloudflare Workers",
+      "Vercel AI SDK",
+      "Gemini",
+    ],
+    story:
+      "架空の不動産会社「みらい不動産」を舞台に、契約後の顧客対応を担うシステムとして設計。不動産業を1人で営む事業者が抱える「タグ別配信」「報告・更新期限のリマインド」「現場写真からの報告書作成」という3つの課題に向き合いました。ドメイン層をLINE SDKやDBの実装から切り離し、本番実装とデモ用Fake実装を1箇所で差し替えられるアーキテクチャにこだわりました。",
+    highlights: [
+      "Server Actionの直接POST到達によるガード迂回を防ぐため、DB操作関数群にopaque tokenの認証permitを要求させ、呼び忘れを型エラーとして検出",
+      "Branded Types・opaque token（QuotaGuard）でID取り違えや送信上限超過をコンパイル時に防止",
+      "Webhookは処理後に記録する順序と冪等なupsertで、LINE再送時の取りこぼし・二重処理を防止",
+      "リマインド発火日は契約日から都度計算する純粋関数で実装し、月末クランプ・うるう年・JST境界をテストで担保",
+    ],
+    githubUrl: "https://github.com/enknot96/crm-realestate",
+    liveUrl: "https://crm-realestate-vert.vercel.app/",
+    demoAccounts: [{ role: "管理者", email: "不要", password: "test0123" }],
+    demoNote:
+      "ポートフォリオ公開用のデモ。LINE送信・メール送信は行われず、AI清書もテンプレート文言に置き換わります（実際には送信・生成されません）。",
+    relatedProject: { slug: "re-aiagent", label: "物件案内AIエージェントを見る" },
   },
 ];
