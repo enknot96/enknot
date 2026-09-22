@@ -8,7 +8,7 @@ import { MobileNav } from "@/components/mobile-nav";
 import { MobileFooter } from "@/components/mobile-footer";
 import { MobileSocialBar } from "@/components/mobile-social-bar";
 import { TerminalFrame } from "@/components/terminal-frame";
-import { BootSequence } from "@/components/boot-sequence";
+// import { BootSequence } from "@/components/boot-sequence";
 
 const sourceCodePro = Source_Code_Pro({
   variable: "--font-source-code-pro",
@@ -53,20 +53,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="h-dvh overflow-hidden antialiased">
         <ThemeProvider>
-          <BootSequence>
-            <TerminalFrame>
-              <Sidebar />
-              <div className="flex-1 flex flex-col min-w-0 gap-2">
-                <Header />
-                <MobileNav />
-                <main className="relative flex-1 min-h-0 border-ui overflow-y-auto">
-                  {children}
-                </main>
-                <MobileSocialBar />
-                <MobileFooter />
-              </div>
-            </TerminalFrame>
-          </BootSequence>
+          {/* <BootSequence> */}
+          <TerminalFrame>
+            <Sidebar />
+            <div className="flex-1 flex flex-col min-w-0 gap-2">
+              <Header />
+              <MobileNav />
+              <main className="relative flex-1 min-h-0 border-ui overflow-y-auto">{children}</main>
+              <MobileSocialBar />
+              <MobileFooter />
+            </div>
+          </TerminalFrame>
+          {/* </BootSequence> */}
         </ThemeProvider>
       </body>
     </html>
