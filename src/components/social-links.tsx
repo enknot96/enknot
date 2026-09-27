@@ -1,11 +1,9 @@
 import { site } from "@/data/site";
-import { GithubIcon, XIcon, NoteIcon, ZennIcon, DevIcon } from "@/components/icons";
+import { GithubIcon, XIcon, DevIcon } from "@/components/icons";
 
 export const SOCIAL_ICONS = {
   github: GithubIcon,
   x: XIcon,
-  note: NoteIcon,
-  zenn: ZennIcon,
   dev: DevIcon,
 } as const;
 

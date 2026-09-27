@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    # UTC 21:17 = JST 6:17。外部ブログ(note/Zenn/dev.to)の記事一覧はビルド時に取り込まれるため、
+    # UTC 21:17 = JST 6:17。外部ブログ(dev.to)の記事一覧はビルド時に取り込まれるため、
     # 日次でビルドし直すことで /blog を更新する。
     # 毎時0分付近はGitHub Actionsが混雑して遅延しやすいので、意図的にずらしている。
     - cron: "17 21 * * *"

@@ -11,8 +11,6 @@ export const site = {
   social: [
     { label: "GitHub", icon: "github", href: "https://github.com/enknot96" },
     { label: "X", icon: "x", href: "https://x.com/enknot96" },
-    { label: "note", icon: "note", href: "https://note.com/enknot96" },
-    { label: "Zenn", icon: "zenn", href: "https://zenn.dev/enknot96" },
     { label: "dev.to", icon: "dev", href: "https://dev.to/enknot96" },
   ],
   readingNow: {

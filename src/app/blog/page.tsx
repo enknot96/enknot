@@ -1,12 +1,10 @@
-import { fetchDevToPosts, fetchNotePosts, fetchZennPosts, type BlogPost } from "@/lib/blog";
-import { NoteIcon, ZennIcon, DevIcon, ArrowRightIcon } from "@/components/icons";
+import { fetchDevToPosts, type BlogPost } from "@/lib/blog";
+import { DevIcon, ArrowRightIcon } from "@/components/icons";
 
 const POSTS_PER_PLATFORM = 3;
 const USERNAME = "enknot96";
 
 const PLATFORMS = [
-  { key: "note", label: "note", Icon: NoteIcon, profileUrl: `https://note.com/${USERNAME}` },
-  { key: "zenn", label: "Zenn", Icon: ZennIcon, profileUrl: `https://zenn.dev/${USERNAME}` },
   { key: "dev", label: "dev.to", Icon: DevIcon, profileUrl: `https://dev.to/${USERNAME}` },
 ] as const;
 
@@ -17,7 +15,7 @@ function PlatformRow({
   posts,
 }: {
   label: string;
-  Icon: typeof NoteIcon;
+  Icon: typeof DevIcon;
   profileUrl: string;
   posts: BlogPost[];
 }) {
@@ -64,15 +62,9 @@ function PlatformRow({
 }
 
 export default async function BlogPage() {
-  const [notePosts, zennPosts, devPosts] = await Promise.all([
-    fetchNotePosts(USERNAME, POSTS_PER_PLATFORM),
-    fetchZennPosts(USERNAME, POSTS_PER_PLATFORM),
-    fetchDevToPosts(USERNAME, POSTS_PER_PLATFORM),
-  ]);
+  const devPosts = await fetchDevToPosts(USERNAME, POSTS_PER_PLATFORM);
 
   const postsByPlatform: Record<(typeof PLATFORMS)[number]["key"], BlogPost[]> = {
-    note: notePosts,
-    zenn: zennPosts,
     dev: devPosts,
   };
 
