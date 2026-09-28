@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import { Anton, Source_Code_Pro, Zen_Kaku_Gothic_New } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Sidebar } from "@/components/sidebar";
-import { Header } from "@/components/header";
-import { MobileNav } from "@/components/mobile-nav";
-import { MobileFooter } from "@/components/mobile-footer";
+import { SiteChrome } from "@/components/site-chrome";
 import { TerminalFrame } from "@/components/terminal-frame";
 // import { BootSequence } from "@/components/boot-sequence";
 
@@ -54,13 +51,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ThemeProvider>
           {/* <BootSequence> */}
           <TerminalFrame>
-            <Sidebar />
-            <div className="flex-1 flex flex-col min-w-0 gap-2">
-              <Header />
-              <MobileNav />
-              <main className="relative flex-1 min-h-0 border-ui overflow-y-auto">{children}</main>
-              <MobileFooter />
-            </div>
+            <SiteChrome>{children}</SiteChrome>
           </TerminalFrame>
           {/* </BootSequence> */}
         </ThemeProvider>
