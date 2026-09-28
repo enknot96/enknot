@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "@/components/theme-provider";
 import { SunIcon, MoonIcon } from "@/components/icons";
-import { SocialLinks } from "@/components/social-links";
 
 function formatTime(date: Date) {
   return date.toLocaleTimeString("en-US", { hour12: false });
@@ -68,11 +67,7 @@ export function Header() {
           <span className="shrink-0 opacity-70">{formatTime(now)}</span>
           <span
             className={`shrink-0 opacity-70 ${
-              isProjectDetail
-                ? "max-[495px]:hidden"
-                : isProjectsList
-                  ? "max-[400px]:hidden"
-                  : ""
+              isProjectDetail ? "max-[495px]:hidden" : isProjectsList ? "max-[400px]:hidden" : ""
             }`}
           >
             {formatDate(now)}
@@ -92,9 +87,6 @@ export function Header() {
       >
         {theme === "light" ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
       </button>
-      <div className="flex items-center gap-3 max-[680px]:hidden">
-        <SocialLinks />
-      </div>
     </div>
   );
 

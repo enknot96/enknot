@@ -36,16 +36,6 @@ export const timeline = [
   },
 ] as const;
 
-export const skills = [
-  "TypeScript",
-  "React",
-  "Next.js",
-  "Astro",
-  "Node.js",
-  "Laravel",
-  "Postgres",
-  "Cloudflare",
-  "Vercel",
-] as const;
+export const skills = ["TypeScript"] as const;
 
 export const qualifications = ["宅地建物取引士", "FP2級", "TOEIC860"] as const;

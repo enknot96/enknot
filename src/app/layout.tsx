@@ -6,7 +6,6 @@ import { Sidebar } from "@/components/sidebar";
 import { Header } from "@/components/header";
 import { MobileNav } from "@/components/mobile-nav";
 import { MobileFooter } from "@/components/mobile-footer";
-import { MobileSocialBar } from "@/components/mobile-social-bar";
 import { TerminalFrame } from "@/components/terminal-frame";
 // import { BootSequence } from "@/components/boot-sequence";
 
@@ -60,7 +59,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <Header />
               <MobileNav />
               <main className="relative flex-1 min-h-0 border-ui overflow-y-auto">{children}</main>
-              <MobileSocialBar />
               <MobileFooter />
             </div>
           </TerminalFrame>
