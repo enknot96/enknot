@@ -83,46 +83,49 @@ export default async function NowPage() {
           </div>
         </section>
 
-        <section className="border-ui flex flex-col gap-4 p-4 md:flex-row">
-          <div className="flex shrink-0 flex-row items-center justify-between gap-2 md:w-40 md:flex-col md:items-start md:justify-start">
-            <div className="flex items-center gap-2">
-              <DevIcon className="h-5 w-5" />
-              <h2 className="text-sm uppercase opacity-60">dev.to</h2>
+        <section>
+          <h2 className="mb-3 text-sm uppercase opacity-60">blog</h2>
+          <div className="border-ui flex flex-col gap-4 p-4 md:flex-row">
+            <div className="flex shrink-0 flex-row items-center justify-between gap-2 md:w-40 md:flex-col md:items-start md:justify-start">
+              <div className="flex items-center gap-2">
+                <DevIcon className="h-5 w-5" />
+                <h3 className="text-sm uppercase opacity-60">dev.to</h3>
+              </div>
+              <a
+                href={`https://dev.to/${USERNAME}`}
+                target="_blank"
+                rel="noreferrer"
+                className="group inline-flex items-center gap-1 text-sm opacity-60 transition duration-200 ease-out hover:opacity-100 hover:text-(--color-accent)"
+              >
+                view all
+                <ArrowRightIcon className="h-3.5 w-3.5 transition-transform duration-200 ease-out group-hover:translate-x-1" />
+              </a>
             </div>
-            <a
-              href={`https://dev.to/${USERNAME}`}
-              target="_blank"
-              rel="noreferrer"
-              className="group inline-flex items-center gap-1 text-sm opacity-60 transition duration-200 ease-out hover:opacity-100 hover:text-(--color-accent)"
-            >
-              view all
-              <ArrowRightIcon className="h-3.5 w-3.5 transition-transform duration-200 ease-out group-hover:translate-x-1" />
-            </a>
-          </div>
-          {devPosts.length > 0 ? (
-            <ul className="flex flex-1 flex-col gap-2">
-              {devPosts.map((post) => (
-                <li
-                  key={post.link + post.title}
-                  className="border-ui p-3"
-                >
-                  <a
-                    href={post.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="transition duration-200 ease-out hover:text-(--color-accent)"
+            {devPosts.length > 0 ? (
+              <ul className="flex flex-1 flex-col gap-2">
+                {devPosts.map((post) => (
+                  <li
+                    key={post.link + post.title}
+                    className="border-ui p-3"
                   >
-                    <p className="text-sm font-semibold">{post.title}</p>
-                    <p className="text-xs opacity-50">{post.date}</p>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="flex flex-1 items-center border-ui p-3 text-sm opacity-50">
-              coming soon...
-            </div>
-          )}
+                    <a
+                      href={post.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="transition duration-200 ease-out hover:text-(--color-accent)"
+                    >
+                      <p className="text-sm font-semibold">{post.title}</p>
+                      <p className="text-xs opacity-50">{post.date}</p>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="flex flex-1 items-center border-ui p-3 text-sm opacity-50">
+                coming soon...
+              </div>
+            )}
+          </div>
         </section>
       </div>
     </div>

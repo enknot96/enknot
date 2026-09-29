@@ -6,7 +6,7 @@ export const timeline = [
   },
   {
     period: "2018.04 – 2024.03",
-    title: "Sales, House Manufacturer",
+    title: "Sales, Real Estate",
     description: "ハウスメーカーで営業として6年間従事",
   },
   {

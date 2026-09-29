@@ -3,7 +3,7 @@ export const site = {
   tagline: "AI × Web Developer",
   name: "Shuto",
   businessName: "屋号：ENKNOT（エンノット）",
-  services: ["Web開発", "AI活用", "業務改善", "Web制作"],
+  services: ["Web開発・制作", "AI活用", "業務改善"],
   about:
     "営業時代に培った顧客対応や業務プロセスの知見を、エンジニアとしての仕事にも活かしています。<br>趣味は読書とキャンプ、子供の頃はサッカーに打ち込んでいました。",
   availability:
