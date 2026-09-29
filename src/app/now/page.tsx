@@ -17,17 +17,18 @@ export default async function NowPage() {
   return (
     <div className="p-4 font-mono text-base md:p-6">
       <div className="flex flex-col gap-8">
-        <section className="flex flex-col gap-2">
-          <div className="flex items-center gap-3">
+        <section className="flex flex-col gap-3">
+          <p className="text-sm opacity-60">whoami</p>
+          <div className="flex items-center gap-4">
             <Image
               src="/enknot-logo.png"
               alt="Shuto"
-              width={44}
-              height={44}
-              className="h-11 w-11 shrink-0 rounded-full object-cover"
+              width={72}
+              height={72}
+              className="h-16 w-16 shrink-0 rounded-full object-cover md:h-18 md:w-18"
             />
-            <div className="flex items-center gap-1.5">
-              <h1 className="text-lg font-semibold">Shuto｜</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="font-anton text-3xl tracking-wide md:text-5xl">Shuto｜</h1>
               <a
                 href={X_URL}
                 target="_blank"
@@ -35,11 +36,11 @@ export default async function NowPage() {
                 aria-label="Shuto on X"
                 className="opacity-70 transition duration-200 ease-out hover:opacity-100 hover:text-(--color-accent)"
               >
-                <XIcon className="h-4 w-4" />
+                <XIcon className="h-6 w-6 md:h-7 md:w-7" />
               </a>
             </div>
           </div>
-          <p className="text-sm opacity-70">
+          <p className="text-base opacity-70 max-[425px]:text-sm">
             Building in public, step by step 👣 Bucket list: Bali & Venice ☕️
           </p>
         </section>

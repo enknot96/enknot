@@ -32,10 +32,10 @@ export const timeline = [
   {
     period: "2026.01 – Present",
     title: "Web Engineer, Full-time",
-    description: "日中はWeb開発会社に正社員として勤務",
+    description: "日中はWeb開発会社にて勤務",
   },
 ] as const;
 
-export const skills = ["TypeScript"] as const;
+export const skills = ["TypeScript", "PHP"] as const;
 
 export const qualifications = ["宅地建物取引士", "FP2級", "TOEIC860"] as const;
