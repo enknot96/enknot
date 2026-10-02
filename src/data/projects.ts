@@ -10,17 +10,6 @@ export type TestCard = {
   cvc: string;
 };
 
-export type IntegratedSystem = {
-  title: string;
-  description: string;
-  techStack: string[];
-  story?: string;
-  highlights: string[];
-  githubUrl?: string;
-  liveUrl?: string;
-  liveUrlLabel?: string;
-};
-
 export type RelatedProject = {
   slug: string;
   label: string;
@@ -45,7 +34,6 @@ export type Project = {
   demoNote?: string;
   testCard?: TestCard;
   relatedProject?: RelatedProject;
-  integratedSystem?: IntegratedSystem;
 };
 
 export const projects: Project[] = [
@@ -68,7 +56,7 @@ export const projects: Project[] = [
     slug: "cebu",
     name: "ACT HOUSE コーポレートサイト",
     category: "client",
-    description: "卒業生実績ギャラリーとCMS管理画面を備えたWordPressサイト",
+    description: "スタッフが自分で更新できる、180日IT留学の公式サイト",
     tags: ["コーポレートサイト"],
     longDescription:
       "フィリピン・セブ島の180日間IT留学プログラムを提供する企業のコーポレートサイトをWordPressで実装。卒業生の転職・起業実績ギャラリーやカリキュラム紹介、コラム記事一覧などのコンテンツを構築しました。",
@@ -104,7 +92,7 @@ export const projects: Project[] = [
     slug: "ava",
     name: "ANJO VERIFY ANTI-AGING LP",
     category: "client",
-    description: "施工実績とお客様の声で訴求する一気通貫のLP構成",
+    description: "施工前後の差で、仕上がりを見せる",
     tags: ["LP"],
     longDescription:
       "プロ職人による高級カーコーティングを提供する店舗のLPを制作。技術説明・料金プラン・施工実績・お客様の声までを掲載し、来店・問い合わせにつながる構成にしました。",
@@ -121,7 +109,7 @@ export const projects: Project[] = [
     slug: "ec-lp",
     name: "まるなげ EC販売支援LP",
     category: "client",
-    description: "課題喚起から料金プランまで一気通貫で伝えるLP",
+    description: "売れない理由を探り、改善へつなぐ",
     tags: ["LP"],
     longDescription:
       "Amazon・楽天などのEC事業者向けに、現状分析から実行支援までを一括代行する「まるなげ」のサービスLPを制作。課題喚起から料金プラン、事例紹介まで、問い合わせにつながる訴求構成を設計しました。",
@@ -200,22 +188,6 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/enknot96/realestate-aiagent",
     liveUrl: "https://realestate-aiagent.vercel.app/",
     relatedProject: { slug: "crm-realestate", label: "顧客管理システムを見る" },
-    integratedSystem: {
-      title: "不動産業務管理API",
-      description:
-        "上のAIエージェントが「道具」として呼び出す、物件・問い合わせ・内見予約を管理するバックエンドAPI",
-      techStack: ["Hono", "TypeScript", "Drizzle ORM", "Neon", "Vitest", "Vercel"],
-      story:
-        "前職でハウスメーカーの営業を6年経験し、物件公開・問い合わせ・内見調整という業務フローや、そこで起こりがちな状態管理の問題を実務として理解しています。",
-      highlights: [
-        "状態遷移テーブルとトランザクション制御によるデータ整合性の担保（許可外の遷移は409で拒否、失敗時はロールバック）",
-        "JWT認証（アクセストークン15分＋リフレッシュローテーション）と、権限ごとに異なるWHERE句を構築する認可設計",
-        "zodスキーマからOpenAPI仕様を自動生成",
-      ],
-      githubUrl: "https://github.com/enknot96/realestate-api",
-      liveUrl: "https://realestate-api-phi.vercel.app/docs",
-      liveUrlLabel: "APIドキュメントを見る",
-    },
   },
   {
     slug: "crm-realestate",
@@ -237,12 +209,11 @@ export const projects: Project[] = [
       "Gemini",
     ],
     story:
-      "架空の不動産会社「みらい不動産」を舞台に、契約後の顧客対応を担うシステムとして設計。不動産業を1人で営む事業者が抱える「タグ別配信」「報告・更新期限のリマインド」「現場写真からの報告書作成」という3つの課題に向き合いました。ドメイン層をLINE SDKやDBの実装から切り離し、本番実装とデモ用Fake実装を1箇所で差し替えられるアーキテクチャにこだわりました。",
+      "架空の不動産会社「みらい不動産」を舞台に、契約後の顧客対応を担うシステムとして設計。1人で営む事業者の「タグ別配信」「期限リマインド」「現場写真からの報告書作成」という3つの課題に向き合いました。ドメイン層をLINE SDKやDBから切り離し、本番とデモ用Fakeを1箇所で差し替えられる構成にしています。",
     highlights: [
-      "Server Actionの直接POST到達によるガード迂回を防ぐため、DB操作関数群にopaque tokenの認証permitを要求させ、呼び忘れを型エラーとして検出",
-      "Branded Types・opaque token（QuotaGuard）でID取り違えや送信上限超過をコンパイル時に防止",
-      "Webhookは処理後に記録する順序と冪等なupsertで、LINE再送時の取りこぼし・二重処理を防止",
-      "リマインド発火日は契約日から都度計算する純粋関数で実装し、月末クランプ・うるう年・JST境界をテストで担保",
+      "直接POSTでのガード迂回を防ぐため、DB操作に認証permitを要求し、呼び忘れを型エラーで検出。Branded TypesとQuotaGuardでID取り違えや送信上限超過も防止",
+      "処理後に記録する順序と冪等なupsertで、LINE再送時の取りこぼし・二重処理を防止",
+      "リマインド発火日を契約日から計算する純粋関数にし、月末・うるう年・JST境界をテストで担保",
     ],
     githubUrl: "https://github.com/enknot96/crm-realestate",
     liveUrl: "https://crm-realestate-vert.vercel.app/",

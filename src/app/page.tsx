@@ -18,10 +18,6 @@ export default function HomePage() {
       </h1>
       <div className="flex flex-col gap-3">
         <div>
-          <p className="text-sm opacity-60">business</p>
-          <p className="text-lg opacity-80 max-[425px]:text-base">{site.businessName}</p>
-        </div>
-        <div>
           <p className="text-sm opacity-60">service</p>
           <p className="text-lg opacity-80 max-[425px]:text-base">{site.services.join(" / ")}</p>
         </div>

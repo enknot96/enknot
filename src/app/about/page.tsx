@@ -50,6 +50,15 @@ export default function ResumeSkillsPage() {
         </section>
 
         <section>
+          <h2 className="mb-4 text-sm uppercase opacity-60">business name</h2>
+          <div className="flex flex-wrap gap-2">
+            <span className="border-ui px-3 py-1 text-sm opacity-80">
+              {site.businessName}
+            </span>
+          </div>
+        </section>
+
+        <section>
           <h2 className="mb-2 text-sm uppercase opacity-60">availability</h2>
           <p className="border-ui p-4 text-sm opacity-70">{site.availability}</p>
           <ContactCTA />

@@ -125,64 +125,6 @@ export default async function ProjectDetailPage({ params }: PageProps<"/projects
           )}
         </div>
 
-        {project.integratedSystem && (
-          <section className="mt-8 border-ui p-4">
-            <h2 className="mb-1 text-sm uppercase opacity-60">related system</h2>
-            <h3 className="mb-2 font-semibold">{project.integratedSystem.title}</h3>
-            <p className="mb-3 text-sm opacity-70">{project.integratedSystem.description}</p>
-            <div className="mb-3 flex flex-wrap gap-2">
-              {project.integratedSystem.techStack.map((tech) => (
-                <span
-                  key={tech}
-                  className={tagClass}
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-            {project.integratedSystem.story && (
-              <p className="mb-3 text-sm leading-relaxed opacity-70">
-                {project.integratedSystem.story}
-              </p>
-            )}
-            <ul className="mb-3 flex flex-col gap-2">
-              {project.integratedSystem.highlights.map((highlight) => (
-                <li
-                  key={highlight}
-                  className="flex gap-2 text-sm opacity-70"
-                >
-                  <span className="opacity-50">—</span>
-                  <span>{highlight}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="flex flex-wrap gap-3">
-              {project.integratedSystem.githubUrl && (
-                <a
-                  href={project.integratedSystem.githubUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={buttonClass}
-                >
-                  <GithubIcon className="h-4 w-4" />
-                  GitHub
-                </a>
-              )}
-              {project.integratedSystem.liveUrl && (
-                <a
-                  href={project.integratedSystem.liveUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={primaryButtonClass}
-                >
-                  {project.integratedSystem.liveUrlLabel ?? "サイトを見る"}
-                  <ArrowUpRightIcon className={externalArrowClass} />
-                </a>
-              )}
-            </div>
-          </section>
-        )}
-
         {project.hostingNote && (
           <p className="mt-4 rounded-sm border border-red-300 bg-red-50 px-4 py-3 text-[13px] text-red-700">
             ⚠️ {project.hostingNote}
