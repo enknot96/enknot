@@ -1,14 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/data/projects";
-import { GithubIcon, ArrowRightIcon, ArrowUpRightIcon } from "@/components/icons";
+import {
+  GithubIcon,
+  ArrowRightIcon,
+  ArrowUpRightIcon,
+} from "@/components/icons";
 
 const tagClass = "border-ui px-3 py-1 text-sm opacity-80";
 const buttonClass =
   "group inline-flex items-center gap-2 border-ui px-4 py-2 text-sm opacity-80 transition duration-200 ease-out hover:opacity-100 hover:text-(--color-accent)";
 const primaryButtonClass =
   "group inline-flex items-center gap-2 bg-(--color-primary) px-4 py-2 text-sm text-(--color-bg) transition duration-200 ease-out hover:opacity-85";
-const arrowClass = "h-3 w-3 transition-transform duration-200 ease-out group-hover:translate-x-1";
+const arrowClass =
+  "h-3 w-3 transition-transform duration-200 ease-out group-hover:translate-x-1";
 const externalArrowClass =
   "h-3 w-3 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5";
 
@@ -19,13 +24,18 @@ export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
 
-export default async function ProjectDetailPage({ params }: PageProps<"/projects/[slug]">) {
+export default async function ProjectDetailPage({
+  params,
+}: PageProps<"/projects/[slug]">) {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
 
   if (!project) {
     notFound();
   }
+
+  const hasDemoAccounts =
+    !!project.demoAccounts && project.demoAccounts.length > 0;
 
   return (
     <div className="p-4 font-mono text-base md:p-6">
@@ -41,17 +51,18 @@ export default async function ProjectDetailPage({ params }: PageProps<"/projects
         <p className="text-sm opacity-60">
           {project.category === "client" ? "client work" : "personal project"}
         </p>
-        <h1 className="mt-1 mb-4 text-2xl font-semibold md:text-4xl">{project.name}</h1>
-        <p className="mb-8 text-sm leading-relaxed opacity-80">{project.longDescription}</p>
+        <h1 className="mt-1 mb-4 text-2xl font-semibold md:text-4xl">
+          {project.name}
+        </h1>
+        <p className="mb-8 text-sm leading-relaxed opacity-80">
+          {project.longDescription}
+        </p>
 
         <section className="mb-8">
           <h2 className="mb-3 text-sm uppercase opacity-60">tech stack</h2>
           <div className="flex flex-wrap gap-2">
             {project.techStack.map((tech) => (
-              <span
-                key={tech}
-                className={tagClass}
-              >
+              <span key={tech} className={tagClass}>
                 {tech}
               </span>
             ))}
@@ -61,7 +72,9 @@ export default async function ProjectDetailPage({ params }: PageProps<"/projects
         {project.story && (
           <section className="mb-8">
             <h2 className="mb-3 text-sm uppercase opacity-60">story</h2>
-            <p className="text-sm leading-relaxed opacity-70">{project.story}</p>
+            <p className="text-sm leading-relaxed opacity-70">
+              {project.story}
+            </p>
             {project.relatedProject && (
               <Link
                 href={`/projects/${project.relatedProject.slug}`}
@@ -78,10 +91,7 @@ export default async function ProjectDetailPage({ params }: PageProps<"/projects
           <h2 className="mb-3 text-sm uppercase opacity-60">highlights</h2>
           <ul className="flex flex-col gap-2">
             {project.highlights.map((highlight) => (
-              <li
-                key={highlight}
-                className="flex gap-2 text-sm opacity-70"
-              >
+              <li key={highlight} className="flex gap-2 text-sm opacity-70">
                 <span className="opacity-50">—</span>
                 <span>{highlight}</span>
               </li>
@@ -131,37 +141,52 @@ export default async function ProjectDetailPage({ params }: PageProps<"/projects
           </p>
         )}
 
-        {project.demoAccounts && project.demoAccounts.length > 0 && (
+        {(hasDemoAccounts || project.demoNote || project.testCard) && (
           <div className="mt-6 border-ui p-4">
-            <h2 className="mb-3 text-sm uppercase opacity-60">デモ用アカウント</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b border-(--color-line) opacity-60">
-                    <th className="py-2 pr-4 font-normal">role</th>
-                    <th className="py-2 pr-4 font-normal">email</th>
-                    <th className="py-2 font-normal">password</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {project.demoAccounts.map((account) => (
-                    <tr
-                      key={account.email}
-                      className="border-b border-(--color-line) last:border-0"
-                    >
-                      <td className="py-2 pr-4 whitespace-nowrap opacity-80">{account.role}</td>
-                      <td className="py-2 pr-4 opacity-80">{account.email}</td>
-                      <td className="py-2 opacity-80">{account.password}</td>
+            <h2 className="mb-3 text-sm uppercase opacity-60">
+              {hasDemoAccounts ? "デモ用アカウント" : "決済テスト用カード"}
+            </h2>
+            {project.demoAccounts && hasDemoAccounts && (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-(--color-line) opacity-60">
+                      <th className="py-2 pr-4 font-normal">role</th>
+                      <th className="py-2 pr-4 font-normal">email</th>
+                      <th className="py-2 font-normal">password</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            {project.demoNote && <p className="mt-4 text-sm opacity-60">{project.demoNote}</p>}
+                  </thead>
+                  <tbody>
+                    {project.demoAccounts.map((account) => (
+                      <tr
+                        key={account.email}
+                        className="border-b border-(--color-line) last:border-0"
+                      >
+                        <td className="py-2 pr-4 whitespace-nowrap opacity-80">
+                          {account.role}
+                        </td>
+                        <td className="py-2 pr-4 opacity-80">
+                          {account.email}
+                        </td>
+                        <td className="py-2 opacity-80">{account.password}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            {project.demoNote && (
+              <p
+                className={`text-sm opacity-60 ${hasDemoAccounts ? "mt-4" : ""}`}
+              >
+                {project.demoNote}
+              </p>
+            )}
             {project.testCard && (
               <div className="mt-3 flex flex-col gap-1 text-sm opacity-70">
                 <p>
-                  テストカード番号: <span className="opacity-100">{project.testCard.number}</span>
+                  テストカード番号:{" "}
+                  <span className="opacity-100">{project.testCard.number}</span>
                 </p>
                 <p>有効期限: {project.testCard.expiry}</p>
                 <p>セキュリティコード: {project.testCard.cvc}</p>

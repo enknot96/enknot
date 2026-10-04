@@ -241,12 +241,7 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/enknot96/bookstore",
     liveUrl: "https://bookstore-igf1.onrender.com/",
     adminUrl: "https://bookstore-igf1.onrender.com/admin",
-    demoAccounts: [
-      { role: "一般ユーザー", email: "customer@example.com", password: "password" },
-      { role: "管理者", email: "admin@example.com", password: "password" },
-    ],
-    demoNote:
-      "ポートフォリオ公開用のデモアカウントです。決済はStripeのテストモードのみで動作します。",
+    demoNote: "決済はStripeのテストモードのみで動作します。",
     testCard: {
       number: "4242 4242 4242 4242",
       expiry: "任意の未来の日付",
